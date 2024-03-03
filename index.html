@@ -1,29 +1,195 @@
 <!doctype html>
 <html>
 <head>
+    <link rel="stylesheet" href="assets/styles.css">
     <title>Build-A-PDF</title>
+    <!-- jsDelivr :: Sortable :: Latest (https://www.jsdelivr.com/package/npm/sortablejs) -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="src/pdf-lib.js"></script>
+    <script src="src/jszip.js"></script>
+    <script src="src/file-saver.js"></script>
+    <script src="src/pdfBuilder.js"></script>
+    <script src="src/uiHelpers.js"></script>
 </head>
 <body>
 <script>
 /* HOW TO USE myFunction from mymodule.js ??? */
 </script>
 
-This is a test
+<div class="intro">
+<h2>PDF Picnic</h2>
+
+It's easy
+
+<br>
+<h3> Step 1. Prepare your contributeion</h3>
+Typeset a recipe. Typeset three! Submit a cover or weird book/food fan art or photos. What are <i>you</i> bringing to the potluck? 
+
+<br>
+<h3>Step 2. Load up your plate</h3>
+All submissions are due by midnight, Saturday March 23rd (PST). Once they're turned in, I'll lay out the spread and you'll be able to select which pages/recipes and the order they go in to assemble your personal Renegade PDF Potluck typeset! 
+
+
+<br>
+<h3>Step 3. Potluck 'n Party!</h3>
+Share your bound copy and/or freakish food creation on April 1st in celebration of Edible Book Day. In the week leading up to it, we'll have a couple cook 'n craft alongs. Just as a meal can be greatly enjoyed broken into several courses, so can a book be pleasantly crafted across several sessions. Monday for text block sewing while XXX prepares for us YYY. Wednesday for edge management. Trimming, sanding, any sort of decorations (headbands, painting, etc) are encouraged while AAA cooks up BBB. Finally on Friday we'll build our case and case in to completion while EEEE shows us how to cook FFFF. 
+
+<br>
+<h3>Step 4. Enjoy</h3>
+Photos of this year's results will be shared and last year's winners announced! 
+</div>
+
 
 <br>
 
-can I tell <b>this is a test</b>?
+<script type="text/javascript">
+async function runThings() {
+  const pdfDoc = await PDFLib.PDFDocument.create()
 
+  const sourcePdfUrl = 'pdfs/sample_page_1.pdf'
+  const sourceBuffer = await fetch(sourcePdfUrl).then((res) => res.arrayBuffer())
+  const sourcePdfDoc = await PDFLib.PDFDocument.load(sourceBuffer)
+  console.log("Our PDF is here: "+sourcePdfDoc)
+  const sourcePdfPage = sourcePdfDoc.getPages()[0]
+  const embeddedPage = await pdfDoc.embedPage(sourcePdfPage)
+  const newPage = pdfDoc.addPage()
+  newPage.drawPage(embeddedPage, {
+    x: 0,
+    y: 0,
+    xScale: 0.5,
+    yScale: 0.5,
+    rotate: PDFLib.degrees(0),
+    opacity: 0.75,
+  });
+  console.log("Rebecca, I see "+embeddedPage)
+  makeTheZip(pdfDoc)
+}
+
+
+async function makeTheZip(pdfToSave) {
+  console.log("Starting makeTheZip")
+  let zip = new JSZip();
+  await pdfToSave.save().then(pdfBytes => {
+    zip.file('result_file.pdf', pdfBytes);
+  });
+  console.log(" > we've saved the PDF");
+  zip.generateAsync({ type: "blob" }).then(blob => {
+    console.log(" >> post generating an async blob?");
+    saveAs(blob, "the_result.zip");
+  });
+}
+</script>
+
+
+<input type="button" value="sharks" onClick="runThings()">
+
+<div class="tag-control-box">
+  <input type="checkbox" id="enable-tag-a"  data-value="a" onClick="toggleTag(this)" checked>
+  <label for="enable-tag-a">Sharks</label>
+  <input type="checkbox" id="enable-tag-b"  data-value="a" onClick="toggleTag(this)" checked>
+  <label for="enable-tag-b">Monkies</label>
+  <input type="checkbox" id="enable-tag-c"  data-value="a" onClick="toggleTag(this)" checked>
+  <label for="enable-tag-c">Candy</label>
+</div>
 <br>
 
-(am trying to understand github hosting stuff...)
+<input type="button" value="Report!" id="report" onClick="buildThatPdf(sortable2.toArray())">
+<BR>
 
-<p>
-sharks?
+<div id="exampler">
+  <div id="example1" class="list-group col">
+    <div class="list-group-item"> <!-- start -->
+      <div class="dot-box">
+        <div class="dot tag-a"></div><div class="dot tag-b"></div><div class="dot tag-c"></div>
+      </div>
+      <div class="deleter" onClick="deleteMe(this)">[X]</div>
+      <div class="handle"></div>
+      <div class="colors full"></div>
+      <div class="colors partial"></div>
+      <div class="colors black"></div>
+      <div class="frame folio"></div>
+      <div class="frame quarto"></div>
+      <div class="frame sexto"></div>
+      <div class="title">XXXX</div>
+      <div class="author">YYY</div>
+      <div class="category">ZZZZj</div>
+    </div> <!-- end -->
+  </div>
+  <div id="example2" class="list-group col"></div>
+</div>
 
-<p>
-  candy?
+<script type="text/javascript">
+  var el1 = document.getElementById('example1');
+  var data = [
+    {type: 'header', value: 'zz1', label: 'ZZ1', entries: [
+      ['Test 1', 'pdfs/sample_page_1.pdf', 'six', new Set(['a','b','c'])],
+      ['Test 2', 'pdfs/sample_page_2.pdf', 'six', new Set(['a','c'])],
+      ['Cookie 1', 'pdfs/cookie_1.pdf', 'suko', new Set(['b'])],
+      ['Cookie 2', 'pdfs/cookie_2.pdf', 'suko', new Set(['b','c'])],
+    ]},
+    {type: 'header', value: 'BBBBB2', label: 'BBBB2', entries: [
+      ['RemedialJediTheology_TestPages_002', 'pdfs/RemedialJediTheology_TestPages_002 - AetherSeer.pdf', 'AetherSeer', new Set()],
+      ['UrbeAurea_TestPages_001', 'pdfs/UrbeAurea_TestPages_001 - AetherSeer.pdf', 'AetherSeer', new Set()],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      // ['Dummy1', 'Dummy1', 'Dummy1'],
+      ['UrbeAurea_TestPages_002', 'pdfs/UrbeAurea_TestPages_002 - AetherSeer.pdf', 'AetherSeer', new Set('b')],
+      ]}
+  ]
+  var newEls = data.forEach( d => {
+    buildHeader(d.value, d.label, el1);
+    buildPdfEntries(d.entries, d.value, el1);
+  })
+  function deleteMe(xButton) {
+    var rowToKill = xButton.parentElement
+    rowToKill.parentElement.removeChild(rowToKill)
+  }
 
+  function makeOptions(tagName) {
+    return {
+      group: "a-b",
+      filter: ".ignore-elements",  // Selectors that do not lead to dragging (String or Function)
+      handle: ".handle",  // Drag handle selector within list items
+      chosenClass: "sortable-chosen",  // Class name for the chosen item
+      dragClass: "sortable-drag",  // Class name for the dragging item
+      dataIdAttr: 'data-id',
+      onUpdate: function() {
+        console.log( tagName+" UPDATE "+ this.toArray() );
+      },
+      onEnd: function() {
+        console.log(tagName+" END "+ this.toArray() );
+      },
+      // Element is removed from the list into another list
+      onRemove: function (/**Event*/evt) {
+        console.log(tagName+" REMOVE "+ this.toArray() );
+      },
+      // Element is dropped into the list from another list
+      onAdd: function (/**Event*/evt) {
+        console.log(tagName+" ADD "+ this.toArray() );
+      },
+    }
+  }
+  var sortable1 = new Sortable(el1, makeOptions("list1"));
+  var el2 = document.getElementById('example2');
+  var sortable2 = new Sortable(el2, makeOptions("list2"));
+  function runReport() {
+    console.log("I see: ", sortable1.toArray()," & ",sortable2.toArray()  );
+  }
+</script>
 </body>
 </html>
