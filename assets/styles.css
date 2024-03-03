@@ -8,7 +8,6 @@
   width: 300px;
   min-height: 20px;
   margin: 12px;
-  display: inline-block;
 }
 #example1 {
   overflow-y:auto;
@@ -100,11 +99,13 @@
 /* !!!!!!!!!!!!!!!!!!!!!! COLUMN DIVIDER*/
 .column-header {
   font-weight: bolder;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 .toggle {
   position: absolute;
   right: 0px;
-  top: 10px;
   font-family: monospace;
 }
 div.list-group div.list-group-item.hide-category {
@@ -141,11 +142,14 @@ div.list-group div.list-group-item.hide-category {
 .tag-a,.tag-b,.tag-c {
   opacity: 1;
 }
+.tag-control-box .dot {
+  display: inline-block;
+}
 .list-group-item.tag-a,.list-group-item.tag-b,.list-group-item.tag-c {
   opacity: 1;
   display: none;
 }
-.list-group-item.tag-a.show-tag-a,.list-group-item.tag-b.show-tag-b,.list-group-item.tag-c.show-tag-b {
+.list-group-item.tag-a.show-tag-a,.list-group-item.tag-b.show-tag-b,.list-group-item.tag-c.show-tag-c {
   display: block;
 }
 .dot-box {
@@ -164,6 +168,7 @@ body  .sortable-drag {
 
 body .ignore-elements {
   background: red;
+  margin-left: 0px;
 }
 
 #example6 .list-group-item{

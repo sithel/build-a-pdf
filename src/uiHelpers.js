@@ -17,7 +17,7 @@ function buildPdfEntries(entries, value, el1) {
       <div class="frame sexto"></div>
       <div class="title">`+d[0]+`</div>
       <div class="author">`+d[2]+`</div>
-      <div class="category">ZZZZj</div>
+      <div class="category">`+value+` : `+Array.from(d[3]).join(" ")+`</div>
       `
     row.setAttribute("class", ["list-group-item","category-"+value, ifTag(d[3], 'a', 'tag-'),ifTag(d[3], 'b', 'tag-'),ifTag(d[3], 'c', 'tag-'),ifTag(d[3], 'a', 'show-tag-'),ifTag(d[3], 'b', 'show-tag-'),ifTag(d[3], 'c', 'show-tag-')].join(" "),)
     row.setAttribute("data-id", d[1])
@@ -25,7 +25,6 @@ function buildPdfEntries(entries, value, el1) {
   })
 }
 function ifTag(tags, value, newTag) {
-  console.log("Looking at ",tags," and ",value)
   return (tags.has(value)) ? newTag+value : ''
 }
 

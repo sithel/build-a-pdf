@@ -42,92 +42,98 @@ Photos of this year's results will be shared and last year's winners announced!
 
 <br>
 
-<script type="text/javascript">
-async function runThings() {
-  const pdfDoc = await PDFLib.PDFDocument.create()
-
-  const sourcePdfUrl = 'pdfs/sample_page_1.pdf'
-  const sourceBuffer = await fetch(sourcePdfUrl).then((res) => res.arrayBuffer())
-  const sourcePdfDoc = await PDFLib.PDFDocument.load(sourceBuffer)
-  console.log("Our PDF is here: "+sourcePdfDoc)
-  const sourcePdfPage = sourcePdfDoc.getPages()[0]
-  const embeddedPage = await pdfDoc.embedPage(sourcePdfPage)
-  const newPage = pdfDoc.addPage()
-  newPage.drawPage(embeddedPage, {
-    x: 0,
-    y: 0,
-    xScale: 0.5,
-    yScale: 0.5,
-    rotate: PDFLib.degrees(0),
-    opacity: 0.75,
-  });
-  console.log("Rebecca, I see "+embeddedPage)
-  makeTheZip(pdfDoc)
-}
-
-
-async function makeTheZip(pdfToSave) {
-  console.log("Starting makeTheZip")
-  let zip = new JSZip();
-  await pdfToSave.save().then(pdfBytes => {
-    zip.file('result_file.pdf', pdfBytes);
-  });
-  console.log(" > we've saved the PDF");
-  zip.generateAsync({ type: "blob" }).then(blob => {
-    console.log(" >> post generating an async blob?");
-    saveAs(blob, "the_result.zip");
-  });
-}
-</script>
-
-
-<input type="button" value="sharks" onClick="runThings()">
-
 <div class="tag-control-box">
+  Filter by tags: 
   <input type="checkbox" id="enable-tag-a"  data-value="a" onClick="toggleTag(this)" checked>
-  <label for="enable-tag-a"><div class="dot tag-a"></div> Sharks</label>
-  <input type="checkbox" id="enable-tag-b"  data-value="a" onClick="toggleTag(this)" checked>
-  <label for="enable-tag-b"><div class="dot tag-b"></div> Monkies</label>
-  <input type="checkbox" id="enable-tag-c"  data-value="a" onClick="toggleTag(this)" checked>
-  <label for="enable-tag-c"><div class="dot tag-c"> Candy</label>
+  <label for="enable-tag-a"><div class="dot tag-a"></div> Vegetarian</label>
+
+  <input type="checkbox" id="enable-tag-b"  data-value="b" onClick="toggleTag(this)" checked>
+  <label for="enable-tag-b"><div class="dot tag-b"></div> Vegan</label>
+  
+  <input type="checkbox" id="enable-tag-c"  data-value="c" onClick="toggleTag(this)" checked>
+  <label for="enable-tag-c"><div class="dot tag-c"></div> Lactose Free</label>
 </div>
 <br>
 
-<input type="button" value="Report!" id="report" onClick="buildThatPdf(sortable2.toArray())">
+<div class="block-positioning">
+  Horizontal page content positioning : 
+  <select name="cars" id="horizontal_page_positioning">
+    <option value="inner">snug against binding</option>
+    <option value="center">centered</option>
+    <option value="outer">snug against fore edge</option>
+  </select> <br/>
+
+  Vertical page content positioning : 
+  <select name="cars" id="vertical_page_positioning">
+    <option value="top">snug against header</option>
+    <option value="center">centered</option>
+    <option value="bottom">snug against bottom</option>
+  </select> <br/>
+
+  Verso header : 
+  <select name="cars" id="verso_header">
+    <option value="title">title</option>
+    <option value="nothing">nothing</option>
+    <option value="section">section name</option>
+  </select> <br/>
+
+  Recto header : 
+  <select name="cars" id="recto_header">
+    <option value="section">section name</option>
+    <option value="title">title</option>
+    <option value="nothing">nothing</option>
+  </select> <br/>
+
+</div>
+<br>
+
+<input type="button" value="Preview!" id="report" onClick="buildThatPdf(sortable2.toArray(), true)">
+<input type="button" value="Save!" id="report" onClick="buildThatPdf(sortable2.toArray(), false)">
 <BR>
 
 <div id="exampler">
-  <div id="example1" class="list-group col">
-    <div class="list-group-item"> <!-- start -->
-      <div class="dot-box">
-        <div class="dot tag-a"></div><div class="dot tag-b"></div><div class="dot tag-c"></div>
-      </div>
-      <div class="deleter" onClick="deleteMe(this)">[X]</div>
-      <div class="handle"></div>
-      <div class="colors full"></div>
-      <div class="colors partial"></div>
-      <div class="colors black"></div>
-      <div class="frame folio"></div>
-      <div class="frame quarto"></div>
-      <div class="frame sexto"></div>
-      <div class="title">XXXX</div>
-      <div class="author">YYY</div>
-      <div class="category">ZZZZj</div>
-    </div> <!-- end -->
-  </div>
-  <div id="example2" class="list-group col"></div>
+<table>
+  <tr style="vertical-align: top;"><td>
+    <div id="example1" class="list-group col">
+      <div class="list-group-item"> <!-- start -->
+        <div class="dot-box">
+          <div class="dot tag-a"></div><div class="dot tag-b"></div><div class="dot tag-c"></div>
+        </div>
+        <div class="deleter" onClick="deleteMe(this)">[X]</div>
+        <div class="handle"></div>
+        <div class="colors full"></div>
+        <div class="colors partial"></div>
+        <div class="colors black"></div>
+        <div class="frame folio"></div>
+        <div class="frame quarto"></div>
+        <div class="frame sexto"></div>
+        <div class="title">Ignore this</div>
+        <div class="author">Debug header</div>
+        <div class="category">sharks</div>
+      </div> <!-- end -->
+    </div>
+  </td><td>
+    <div id="example2" class="list-group col"></div>
+  </td></tr>
+</table>
 </div>
+
+
+Preview
+<center>
+  <iframe id="pdf" style="width: 100%; height: 10px; display: none"></iframe>
+</center>
 
 <script type="text/javascript">
   var el1 = document.getElementById('example1');
   var data = [
-    {type: 'header', value: 'zz1', label: 'ZZ1', entries: [
+    {type: 'header', value: 'dessert', label: 'Desserts', entries: [
       ['Test 1', 'pdfs/sample_page_1.pdf', 'six', new Set(['a','b','c'])],
       ['Test 2', 'pdfs/sample_page_2.pdf', 'six', new Set(['a','c'])],
       ['Cookie 1', 'pdfs/cookie_1.pdf', 'suko', new Set(['b'])],
       ['Cookie 2', 'pdfs/cookie_2.pdf', 'suko', new Set(['b','c'])],
     ]},
-    {type: 'header', value: 'BBBBB2', label: 'BBBB2', entries: [
+    {type: 'header', value: 'main', label: 'Mains', entries: [
       ['RemedialJediTheology_TestPages_002', 'pdfs/RemedialJediTheology_TestPages_002 - AetherSeer.pdf', 'AetherSeer', new Set()],
       ['UrbeAurea_TestPages_001', 'pdfs/UrbeAurea_TestPages_001 - AetherSeer.pdf', 'AetherSeer', new Set()],
       // ['Dummy1', 'Dummy1', 'Dummy1'],
