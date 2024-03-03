@@ -19,7 +19,7 @@ function buildPdfEntries(entries, value, el1) {
       <div class="author">`+d[2]+`</div>
       <div class="category">ZZZZj</div>
       `
-    row.setAttribute("class", ["list-group-item"])//,"category-"+value, ifTag(d[3], 'a', 'tag-'),ifTag(d[3], 'b', 'tag-'),ifTag(d[3], 'c', 'tag-')].join(" "))
+    row.setAttribute("class", ["list-group-item","category-"+value, ifTag(d[3], 'a', 'tag-'),ifTag(d[3], 'b', 'tag-'),ifTag(d[3], 'c', 'tag-'),ifTag(d[3], 'a', 'show-tag-'),ifTag(d[3], 'b', 'show-tag-'),ifTag(d[3], 'c', 'show-tag-')].join(" "),)
     row.setAttribute("data-id", d[1])
     el1.appendChild(row)
   })
@@ -55,6 +55,6 @@ function toggleTag(el) {
   var value = el.getAttribute('data-value')
   console.log("Poking at ["+value+"]  : ",document.getElementsByClassName("has-tag-"+value)," with ",el.checked," :: ",el)
   Array.from(document.getElementsByClassName("tag-"+value)).forEach(e => {
-    (!el.checked)? e.classList.add("hide-tag-"+value) : e.classList.remove("hide-tag-"+value)
+    (el.checked)? e.classList.add("show-tag-"+value) : e.classList.remove("show-tag-"+value)
   })
 }

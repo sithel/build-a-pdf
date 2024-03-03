@@ -85,11 +85,11 @@ async function makeTheZip(pdfToSave) {
 
 <div class="tag-control-box">
   <input type="checkbox" id="enable-tag-a"  data-value="a" onClick="toggleTag(this)" checked>
-  <label for="enable-tag-a">Sharks</label>
+  <label for="enable-tag-a"><div class="dot tag-a"></div> Sharks</label>
   <input type="checkbox" id="enable-tag-b"  data-value="a" onClick="toggleTag(this)" checked>
-  <label for="enable-tag-b">Monkies</label>
+  <label for="enable-tag-b"><div class="dot tag-b"></div> Monkies</label>
   <input type="checkbox" id="enable-tag-c"  data-value="a" onClick="toggleTag(this)" checked>
-  <label for="enable-tag-c">Candy</label>
+  <label for="enable-tag-c"><div class="dot tag-c"> Candy</label>
 </div>
 <br>
 
@@ -151,10 +151,11 @@ async function makeTheZip(pdfToSave) {
       ['UrbeAurea_TestPages_002', 'pdfs/UrbeAurea_TestPages_002 - AetherSeer.pdf', 'AetherSeer', new Set('b')],
       ]}
   ]
-  var newEls = data.forEach( d => {
+  data.forEach( d => {
     buildHeader(d.value, d.label, el1);
     buildPdfEntries(d.entries, d.value, el1);
   })
+
   function deleteMe(xButton) {
     var rowToKill = xButton.parentElement
     rowToKill.parentElement.removeChild(rowToKill)
