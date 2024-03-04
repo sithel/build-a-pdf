@@ -1,6 +1,9 @@
 .intro {
-  zoom: 0.25;
+  zoom: 0.75;
   text-align: center;
+  opacity: 0.75; 
+  width: 60%;
+  padding: 0% 20%;
 }
 
 #example1, #example2 {
@@ -39,7 +42,9 @@
   display: inline-block;
   background: red;
   float: right;
-
+}
+#example1 .deleter {
+  display: none;
 }
 .title {
   font-weight: bold;
@@ -134,13 +139,13 @@
 .dot.tag-a {
   background: blue;
 }
-.dot-box .dot.has-tag-a,.dot-box .dot.has-tag-b,.dot-box .dot.has-tag-c {
-  opacity: 1;
-  display: inline-block;
-}
 .dot.tag-a,.dot.tag-b,.dot.tag-c {
   opacity: 1;
   display: none;
+}
+.dot-box .dot.has-tag-a,.dot-box .dot.has-tag-b,.dot-box .dot.has-tag-c {
+  opacity: 1;
+  display: inline-block;
 }
 .tag-a,.tag-b,.tag-c {
   opacity: 1;
@@ -160,6 +165,21 @@
   right: 0px;
   bottom: -10px;
   z-index: -1;
+}
+/* !!!!!!!!!!!!!!!!!!!!!! Controls */
+.pdf-controls {
+  border: 2px solid orange;
+  width: 500px;
+  position: absolute;
+}
+.pdf-controls .tag-control-box {
+  padding-bottom: 20px;
+}
+.pdf-preview-frame {
+  width: 500px;
+  border: 2px solid magenta;
+  margin-left: 510px;
+  position: absolute;
 }
 /* !!!!!!!!!!!!!!!!!!!!!! Dragging */
 body .sortable-chosen {

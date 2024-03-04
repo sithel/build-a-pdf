@@ -40,59 +40,14 @@ Photos of this year's results will be shared and last year's winners announced!
 </div>
 
 
-<br>
-
-<div class="tag-control-box">
-  Filter by tags: 
-  <input type="checkbox" id="enable-tag-a"  data-value="a" onClick="toggleTag(this)" checked>
-  <label for="enable-tag-a"><div class="dot tag-a"></div> Vegetarian</label>
-
-  <input type="checkbox" id="enable-tag-b"  data-value="b" onClick="toggleTag(this)" checked>
-  <label for="enable-tag-b"><div class="dot tag-b"></div> Vegan</label>
-  
-  <input type="checkbox" id="enable-tag-c"  data-value="c" onClick="toggleTag(this)" checked>
-  <label for="enable-tag-c"><div class="dot tag-c"></div> Lactose Free</label>
-</div>
-<br>
-
-<div class="block-positioning">
-  Horizontal page content positioning : 
-  <select name="cars" id="horizontal_page_positioning">
-    <option value="inner">snug against binding</option>
-    <option value="center">centered</option>
-    <option value="outer">snug against fore edge</option>
-  </select> <br/>
-
-  Vertical page content positioning : 
-  <select name="cars" id="vertical_page_positioning">
-    <option value="top">snug against header</option>
-    <option value="center">centered</option>
-    <option value="bottom">snug against bottom</option>
-  </select> <br/>
-
-  Verso header : 
-  <select name="cars" id="verso_header">
-    <option value="title">title</option>
-    <option value="nothing">nothing</option>
-    <option value="section">section name</option>
-  </select> <br/>
-
-  Recto header : 
-  <select name="cars" id="recto_header">
-    <option value="section">section name</option>
-    <option value="title">title</option>
-    <option value="nothing">nothing</option>
-  </select> <br/>
-
-</div>
-<br>
-
 <input type="button" value="Preview!" id="report" onClick="buildThatPdf(sortable2.toArray(), true)">
 <input type="button" value="Save!" id="report" onClick="buildThatPdf(sortable2.toArray(), false)">
+Grab recipes on the left by their weird "squares on left" shape and drag them over to add to your book. Don't preview w/ an empty book, things will break.
 <BR>
 
 <div id="exampler">
 <table>
+  <tr><td>Staging</td><td>Book</td></tr>
   <tr style="vertical-align: top;"><td>
     <div id="example1" class="list-group col">
       <div class="list-group-item"> <!-- start -->
@@ -118,11 +73,71 @@ Photos of this year's results will be shared and last year's winners announced!
 </table>
 </div>
 
+<div class="pdf-controls">
+  <div class="tag-control-box" id="tag-info-box">
+    <input type="checkbox" id="enable-tag-a"  data-value="a" onClick="toggleTag(this)" checked>
+    <label for="enable-tag-a"><div class="dot tag-a"></div> Fake label</label>
+  </div>
+  <div class="block-positioning">
+    Horizontal page content positioning : 
+    <select name="cars" id="horizontal_page_positioning">
+      <option value="inner">snug against binding</option>
+      <option value="center">centered</option>
+      <option value="outer">snug against fore edge</option>
+    </select> <br/>
 
-Preview
-<center>
+    Vertical page content positioning : 
+    <select name="cars" id="vertical_page_positioning">
+      <option value="top">snug against header</option>
+      <option value="center">centered</option>
+      <option value="bottom">snug against bottom</option>
+    </select> <br/>
+
+    Verso header : 
+    <select name="cars" id="verso_header">
+      <option value="title">title</option>
+      <option value="nothing">nothing</option>
+      <option value="section">section name</option>
+    </select> <br/>
+
+    Recto header : 
+    <select name="cars" id="recto_header">
+      <option value="section">section name</option>
+      <option value="title">title</option>
+      <option value="nothing">nothing</option>
+    </select> <br/>
+  </div>
+</div>
+
+<div class="pdf-preview-frame">
+  <div>Preview</div>
   <iframe id="pdf" style="width: 100%; height: 10px; display: none"></iframe>
-</center>
+</div>
+
+
+
+<script language="javascript">
+  var tags = [
+    { value: "a", label: "Vegetarian" },
+    { value: "b", label: "Vegan" },
+    { value: "c", label: "Lactose Free" },
+    { value: "d", label: "Spicy" },
+  ]
+  var tagInfoBox = document.getElementById('tag-info-box');
+  console.log("infobox? ",tagInfoBox)
+  var z = tags.reduce((acc, tag) => {
+    var v = tag.value;
+    var s = `
+  <input type="checkbox" id="enable-tag-`+v+`"  data-value="`+v+`" onClick="toggleTag(this)" checked>
+  <label for="enable-tag-`+v+`"><div class="dot tag-`+v+`"></div>&nbsp;`+tag.label+`</label>
+`
+    console.log("Rebecca : ",s)
+    return acc + s
+  }, "Filter <b>Staging</b> content by tags: ");
+  console.log("And done w/ ",z)
+  tagInfoBox.innerHTML = z;
+</script>
+
 
 <script type="text/javascript">
   var el1 = document.getElementById('example1');
@@ -136,24 +151,6 @@ Preview
     {type: 'header', value: 'main', label: 'Mains', entries: [
       ['RemedialJediTheology_TestPages_002', 'pdfs/RemedialJediTheology_TestPages_002 - AetherSeer.pdf', 'AetherSeer', new Set()],
       ['UrbeAurea_TestPages_001', 'pdfs/UrbeAurea_TestPages_001 - AetherSeer.pdf', 'AetherSeer', new Set()],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
-      // ['Dummy1', 'Dummy1', 'Dummy1'],
       ['UrbeAurea_TestPages_002', 'pdfs/UrbeAurea_TestPages_002 - AetherSeer.pdf', 'AetherSeer', new Set('b')],
       ]}
   ]
@@ -175,6 +172,7 @@ Preview
       chosenClass: "sortable-chosen",  // Class name for the chosen item
       dragClass: "sortable-drag",  // Class name for the dragging item
       dataIdAttr: 'data-id',
+      animation: 150,
       onUpdate: function() {
         console.log( tagName+" UPDATE "+ this.toArray() );
       },
@@ -194,9 +192,6 @@ Preview
   var sortable1 = new Sortable(el1, makeOptions("list1"));
   var el2 = document.getElementById('example2');
   var sortable2 = new Sortable(el2, makeOptions("list2"));
-  function runReport() {
-    console.log("I see: ", sortable1.toArray()," & ",sortable2.toArray()  );
-  }
 </script>
 </body>
 </html>
