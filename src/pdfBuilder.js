@@ -14,8 +14,9 @@ async function buildThatPdf(fileNames, isPreview) {
     title: "Renegade PDF Potluck 2024"
   }
 
-  const pages = fileNames.map(fileName => pullAndPlacePdf(pdfDoc, fileName, meta));
-  await Promise.all(pages)
+  for(let fileName of fileNames) {
+    await pullAndPlacePdf(pdfDoc, fileName, meta);
+  }
   
   if (isPreview) {
     showPreview(pdfDoc)
@@ -27,8 +28,8 @@ async function buildThatPdf(fileNames, isPreview) {
 async function pullAndPlacePdf(pdfDoc, fileName, meta) {
   const sourceBuffer = await fetch(fileName).then((res) => res.arrayBuffer())
   const sourcePdfDoc = await PDFLib.PDFDocument.load(sourceBuffer)
-  sourcePdfDoc.getPages().forEach((sourcePdfPage,i) => embedAndPlacePage(pdfDoc, sourcePdfPage,
-   {fileName: fileName, sourcePageNumber: i, ...meta}));
+  await Promise.all(sourcePdfDoc.getPages().map((sourcePdfPage,i) => embedAndPlacePage(pdfDoc, sourcePdfPage,
+   {fileName: fileName, sourcePageNumber: i, ...meta})));
 }
 
 async function embedAndPlacePage(pdfDoc, sourcePdfPage, meta) {
@@ -47,21 +48,25 @@ async function embedAndPlacePage(pdfDoc, sourcePdfPage, meta) {
     case 'center': var x = hgap/2.0;                break;
     case 'outer': var x = (isRecto) ? hgap : 0;     break;
   }
-  newPage.drawPage(embeddedPage, { x: x, y: vgap/2.0, xScale: scale, yScale: scale});
+  switch(meta.vPagePlacement){
+    case 'top': var y = vgap;         break;
+    case 'center': var y = vgap/2.0;  break;
+    case 'bottom': var y = 0;         break;
+  }
+  newPage.drawPage(embeddedPage, { x: x, y: y, xScale: scale, yScale: scale});
   drawHeader(newPage, {isRecto: isRecto, pageNumber: pageNumber, scale: scale, vgap: vgap, hgap: hgap, ...meta})
 }
 
 function drawHeader(newPage, meta) {
-  // TODO : page number should return the end/start of text? for header to abut it?
-  drawPageNumber(newPage, meta)
+  drawPageNumber(newPage, meta) // TODO : page number should return the end/start of text? for header to abut it?
   drawHeaderText(newPage, meta)
 }
 
 function drawHeaderText(newPage, meta) {
   switch( (meta.isRecto) ? meta.rectoHeader : meta.versoHeader) {
-    case 'section': var pageText = meta.fileName;    break;
-    case 'nothing': var pageText = "";          break;
-    case 'title': var pageText = meta.title;    break;
+    case 'section': var pageText = meta.fileName;     break;
+    case 'nothing': var pageText = "";                break;
+    case 'title': var pageText = meta.title;          break;
   }
   const textWidth = meta.pageNumFont.widthOfTextAtSize(pageText, meta.size)
   const textHeight = meta.pageNumFont.heightAtSize(meta.size)

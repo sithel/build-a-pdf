@@ -108,8 +108,11 @@
   right: 0px;
   font-family: monospace;
 }
-div.list-group div.list-group-item.hide-category {
+#example1.list-group div.list-group-item.hide-category {
   display: none;
+}
+#example2 div.list-group-item {
+  display: block;
 }
 /* !!!!!!!!!!!!!!!!!!!!!! Tags */
 .dot {
