@@ -74,7 +74,7 @@ function drawHeaderText(newPage, meta) {
   var xgap = newPage.getWidth() - textWidth
   newPage.drawText(pageText, {
     x: xgap/2.0,
-    y: newPage.getHeight() - textHeight - meta.vgap/2,
+    y: newPage.getHeight() - textHeight - vgap/2,
     font: meta.pageNumFont,
     size: meta.size,
     color: meta.color,

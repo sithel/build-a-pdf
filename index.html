@@ -142,6 +142,10 @@ Grab recipes on the left by their weird "squares on left" shape and drag them ov
 <script type="text/javascript">
   var el1 = document.getElementById('example1');
   var data = [
+    {type: 'header', value: 'color paper', label: 'Extremes', entries: [
+      ['Tall (3 pages)', 'pdfs/tall.pdf', 'six', new Set(['a'])],
+      ['Landscape (3 pages)', 'pdfs/landscape.pdf', 'six', new Set(['c'])],
+    ]},
     {type: 'header', value: 'dessert', label: 'Desserts', entries: [
       ['Test 1', 'pdfs/sample_page_1.pdf', 'six', new Set(['a','b','c'])],
       ['Test 2', 'pdfs/sample_page_2.pdf', 'six', new Set(['a','c'])],
