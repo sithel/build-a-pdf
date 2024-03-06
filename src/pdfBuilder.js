@@ -1,12 +1,21 @@
 async function buildThatPdf(fileNames, isPreview) {
   console.log("Totes going to build that pdf: ",fileNames)
 
+  const padding = parseInt(document.getElementById("header_padding").value)
+  const fontSize = parseInt(document.getElementById("page_number_font_size").value)
+
+  const exportWidth = parseInt(document.getElementById("exported_width").value)
+  const exportHeight = parseInt(document.getElementById("exported_height").value)
+
+
   const pdfDoc = await PDFLib.PDFDocument.create()
+
   const meta = {
     pageNumFont : await pdfDoc.embedFont(PDFLib.StandardFonts.TimesRoman),
     color : PDFLib.rgb(0,0,0),
-    holdForHeader: 30,
-    size: 24,
+    holdForHeader: fontSize + padding,
+    size: fontSize,
+    dimensions: [exportWidth, exportHeight],
     hPagePlacement: document.getElementById("horizontal_page_positioning").value,
     vPagePlacement: document.getElementById("vertical_page_positioning").value,
     rectoHeader:  document.getElementById("recto_header").value,
@@ -34,7 +43,7 @@ async function pullAndPlacePdf(pdfDoc, fileName, meta) {
 
 async function embedAndPlacePage(pdfDoc, sourcePdfPage, meta) {
   const embeddedPage = await pdfDoc.embedPage(sourcePdfPage)
-  const newPage = pdfDoc.addPage()
+  const newPage = pdfDoc.addPage(meta.dimensions)
   const pageNumber = pdfDoc.getPageCount()
   console.log("===========["+meta.fileName+"]")
   console.log("   ["+meta.sourcePageNumber+"]   newpage (",newPage.getWidth(),", ",newPage.getHeight(),")    embeddedPage (",embeddedPage.width,", ",embeddedPage.height,") ")
@@ -74,7 +83,7 @@ function drawHeaderText(newPage, meta) {
   var xgap = newPage.getWidth() - textWidth
   newPage.drawText(pageText, {
     x: xgap/2.0,
-    y: newPage.getHeight() - textHeight - vgap/2,
+    y: newPage.getHeight() - meta.size*1.25,// - vgap/2,
     font: meta.pageNumFont,
     size: meta.size,
     color: meta.color,
@@ -91,7 +100,7 @@ function drawPageNumber(newPage, meta) {
   var x = (meta.isRecto) ? newPage.getWidth() - pageNumWidth - padding : padding
   newPage.drawText(pageNumText, {
     x: x,
-    y: newPage.getHeight() - pageNumHeight - vgap/2,
+    y: newPage.getHeight() - meta.size*1.25,// pageNumHeight - vgap/2,
     font: meta.pageNumFont,
     size: meta.size,
     color: meta.color,
@@ -119,9 +128,7 @@ async function showPreview(resultPDF){
   viewerPrefs.setCenterWindow(true);
   viewerPrefs.setDisplayDocTitle(true);
   const previewFrame = document.getElementById('pdf');
-      previewFrame.style.width = `450px`;
-      previewFrame.style.height = `600px`;
-      previewFrame.style.display = '';
+  previewFrame.parentNode.style.display = '';
   previewFrame.src = pdfDataUri;
   window.scrollTo(0, document.body.scrollHeight);
 }

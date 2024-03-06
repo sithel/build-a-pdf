@@ -16,6 +16,7 @@
 /* HOW TO USE myFunction from mymodule.js ??? */
 </script>
 
+<center>
 <div class="intro">
 <h2>PDF Picnic</h2>
 
@@ -40,45 +41,52 @@ Photos of this year's results will be shared and last year's winners announced!
 </div>
 
 
-<input type="button" value="Preview!" id="report" onClick="buildThatPdf(sortable2.toArray(), true)">
-<input type="button" value="Save!" id="report" onClick="buildThatPdf(sortable2.toArray(), false)">
-Grab recipes on the left by their weird "squares on left" shape and drag them over to add to your book. Don't preview w/ an empty book, things will break.
-<BR>
-
-<div id="exampler">
-<table>
-  <tr><td>Staging</td><td>Book</td></tr>
-  <tr style="vertical-align: top;"><td>
-    <div id="example1" class="list-group col">
-      <div class="list-group-item"> <!-- start -->
-        <div class="dot-box">
-          <div class="dot tag-a"></div><div class="dot tag-b"></div><div class="dot tag-c"></div>
-        </div>
-        <div class="deleter" onClick="deleteMe(this)">[X]</div>
-        <div class="handle"></div>
-        <div class="colors full"></div>
-        <div class="colors partial"></div>
-        <div class="colors black"></div>
-        <div class="frame folio"></div>
-        <div class="frame quarto"></div>
-        <div class="frame sexto"></div>
-        <div class="title">Ignore this</div>
-        <div class="author">Debug header</div>
-        <div class="category">sharks</div>
-      </div> <!-- end -->
-    </div>
-  </td><td>
-    <div id="example2" class="list-group col"></div>
+<div class="page-dimension">
+  
+  <table><tr><td>
+    <b>Pick your plate, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;plan your (pro)portions!</b><br/><br/>
+      The PDF Potluck tool has been written with the <a href="https://momijizukamori.github.io/bookbinder-js/">Bookbinder JS</a> (Imposition tool) in mind. The way headers and page numbers are placed assumes that all margins (ex: space above the page number) will be applied during the imposition step. 
+    </td><td>
+    <img src="assets/PDF_Potluck_Page_Layout.png">
   </td></tr>
-</table>
+  <tr><td>
+    Exported PDF Page: 
+    <div class="dimensions-input">
+    <input type="number" id="exported_width" name="exported_width" min="20" max="5000" value=275>
+    <label for="exported_width">width (in Points)</label><br>
+    <input type="number" id="exported_height" name="exported_height" min="20" max="5000" value=325>
+    <label for="exported_height">height (in Points)</label>
+    </div>
+    <span class="note">Remember, <b>1 inch = 72 points</b>  and <b>1 mm = 2.8 points</b>.</span>
+  </td><td>
+    Here are some known presets, but you'll want to reduce them to take margins into account: <br/>
+    <input type="button" value="Letter Folio" onClick="set_page_dimensions(396,612)">
+    <input type="button" value="A4 Folio" onClick="set_page_dimensions(421,595)">
+    <input type="button" value="Letter Quarto" onClick="set_page_dimensions(306,396)">
+    <input type="button" value="A4 Quarto" onClick="set_page_dimensions(298,421)">
+  </td></tr>
+  <tr><td colspan=2>
+    <br/>
+    <label for="page_number_font_size">Header text font size </label>
+    <input type="number" id="page_number_font_size" name="page_number_font_size" min="1" max="500" value=12> points
+    w/ additional padding of 
+    <input type="number" id="header_padding" name="header_padding" min="0" max="500" value=20> points
+    below.
+
+    
+  </td></tr>
+  </table>
+  <script language="javascript">
+function set_page_dimensions(width, height) {
+  document.getElementById('exported_width').value = width;
+  document.getElementById('exported_height').value = height;
+}
+  </script>
 </div>
 
-<div class="pdf-controls">
-  <div class="tag-control-box" id="tag-info-box">
-    <input type="checkbox" id="enable-tag-a"  data-value="a" onClick="toggleTag(this)" checked>
-    <label for="enable-tag-a"><div class="dot tag-a"></div> Fake label</label>
-  </div>
-  <div class="block-positioning">
+<div class="page-generated-content">
+  <table><tr><td>
+    <b>Select your sides</b><br>
     Horizontal page content positioning : 
     <select name="cars" id="horizontal_page_positioning">
       <option value="inner">snug against binding</option>
@@ -106,13 +114,57 @@ Grab recipes on the left by their weird "squares on left" shape and drag them ov
       <option value="title">title</option>
       <option value="nothing">nothing</option>
     </select> <br/>
-  </div>
+  </td></tr></table>
 </div>
 
-<div class="pdf-preview-frame">
-  <div>Preview</div>
-  <iframe id="pdf" style="width: 100%; height: 10px; display: none"></iframe>
+
+<div class="page-imported-content exampler">
+  <table><tr><td colspan="2" align=center>
+    <b>Collect your content</b><br>
+    Grab recipes on the left by their weird "squares on left" shape and drag them over to add to your book. Don't preview w/ an empty book, things will break.<br>
+      <input type="button" value="Preview!" id="report" onClick="buildThatPdf(sortable2.toArray(), true)">
+      <input type="button" value="Download!" id="report" onClick="buildThatPdf(sortable2.toArray(), false)">
+    </td></tr>
+    <tr style="vertical-align: top;"><td>
+      The Bounty Before You
+      <div id="example1" class="list-group col">
+        <div class="list-group-item"> <!-- start -->
+          <div class="dot-box">
+            <div class="dot tag-a"></div><div class="dot tag-b"></div><div class="dot tag-c"></div>
+          </div>
+          <div class="deleter" onClick="deleteMe(this)">[X]</div>
+          <div class="handle"></div>
+          <div class="colors full"></div>
+          <div class="colors partial"></div>
+          <div class="colors black"></div>
+          <div class="frame folio"></div>
+          <div class="frame quarto"></div>
+          <div class="frame sexto"></div>
+          <div class="title">Ignore this</div>
+          <div class="author">Debug header</div>
+          <div class="category">sharks</div>
+        </div> <!-- end -->
+      </div>
+    </td><td align=right>
+      What You've Added to Your Plate
+      <div id="example2" class="list-group col"></div>
+    </td></tr>
+    <tr><td>
+      <div class="tag-control-box" id="tag-info-box">
+        <input type="checkbox" id="enable-tag-a"  data-value="a" onClick="toggleTag(this)" checked>
+        <label for="enable-tag-a"><div class="dot tag-a"></div> Fake label</label>
+      </div>
+    </td></tr>
+  </table>
 </div>
+
+<div class="pdf-preview-frame" style="display: none">
+  <b>Preview</b><br>
+  <iframe id="pdf"></iframe>
+</div>
+
+
+
 
 
 
@@ -170,12 +222,13 @@ Grab recipes on the left by their weird "squares on left" shape and drag them ov
 
   function makeOptions(tagName) {
     return {
-      group: "a-b",
+      group: {name: "a-b", pull: "clone", put: false},
       filter: ".ignore-elements",  // Selectors that do not lead to dragging (String or Function)
       handle: ".handle",  // Drag handle selector within list items
       chosenClass: "sortable-chosen",  // Class name for the chosen item
       dragClass: "sortable-drag",  // Class name for the dragging item
       dataIdAttr: 'data-id',
+      emptyInsertThreshold: 300,
       animation: 150,
       onUpdate: function() {
         console.log( tagName+" UPDATE "+ this.toArray() );
@@ -193,9 +246,9 @@ Grab recipes on the left by their weird "squares on left" shape and drag them ov
       },
     }
   }
-  var sortable1 = new Sortable(el1, makeOptions("list1"));
+  var sortable1 = new Sortable(el1, {...makeOptions("list1"), sort: false});
   var el2 = document.getElementById('example2');
-  var sortable2 = new Sortable(el2, makeOptions("list2"));
+  var sortable2 = new Sortable(el2, {...makeOptions("list2"), group: {name: "a-b", pull: "clone", put: true}});
 </script>
 </body>
 </html>

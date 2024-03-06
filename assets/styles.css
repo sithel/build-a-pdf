@@ -1,3 +1,36 @@
+body {
+  background: url(picnic_blanket_background.jpeg);
+}
+.page-dimension table, .page-generated-content table, .page-imported-content table{
+  width: 600px;
+  background: white;
+  border: 5px solid rgb(248 65 76);
+  border-radius: 25px;
+  padding-left: 25px;
+}
+.page-dimension {
+  margin-left: 100px;
+}
+.page-imported-content {
+  margin-top: 20px;
+}
+.page-generated-content{
+  margin-top: 20px;
+  margin-left: 50px;
+}
+.page-dimension img {
+  width: 300px;
+}
+.page-dimension .note {
+  font-size: x-small;
+}
+.page-dimension .dimensions-input {
+  margin-left: 20px;
+}
+.page-dimension input {
+  padding: 0px;
+  margin: 0px;
+}
 .intro {
   zoom: 0.75;
   text-align: center;
@@ -9,8 +42,10 @@
 #example1, #example2 {
   border:1px solid red;
   width: 300px;
-  min-height: 20px;
+  min-height: 100px;
   margin: 12px;
+  background: #ff000021;
+  border-radius: 20px;
 }
 #example1 {
   overflow-y:auto;
@@ -176,10 +211,19 @@
   padding-bottom: 20px;
 }
 .pdf-preview-frame {
+  text-align: center;
   width: 500px;
-  border: 2px solid magenta;
-  margin-left: 510px;
-  position: absolute;
+  margin-left: 75px;
+  margin-top: 50px;
+  border: 5px solid rgb(248 65 76);
+  border-radius: 25px;
+  background: white;
+  padding-top: 0.5em;
+}
+.pdf-preview-frame iframe {
+  width: 400px;
+  height: 550px;
+  margin-top: 0.5em;
 }
 /* !!!!!!!!!!!!!!!!!!!!!! Dragging */
 body .sortable-chosen {
