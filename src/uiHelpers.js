@@ -3,22 +3,24 @@ function buildPdfEntries(entries, value, el1) {
     var row = document.createElement("div")
     row.innerHTML = `
           <div class="dot-box">
-        <div class="dot tag-a `+ifTag(d[3], 'a', 'has-tag-')+`""></div>
-        <div class="dot tag-b `+ifTag(d[3], 'b', 'has-tag-')+`""></div>
-        <div class="dot tag-c `+ifTag(d[3], 'c', 'has-tag-')+`""></div>
-      </div>
-      <div class="deleter" onClick="deleteMe(this)">[X]</div>
-      <div class="handle"></div>
-      <div class="colors full"></div>
-      <div class="colors partial"></div>
-      <div class="colors black"></div>
-      <div class="frame folio"></div>
-      <div class="frame quarto"></div>
-      <div class="frame sexto"></div>
-      <div class="title">`+d[0]+`</div>
-      <div class="author">`+d[2]+`</div>
-      <div class="category">`+value+` : `+Array.from(d[3]).join(" ")+`</div>
-      `
+          `
++ tags.reduce( (acc, t) => { return acc+`
+  <div class="dot tag-`+t.value+` `+ifTag(d[3], t.value, 'has-tag-')+`"></div>
+  `}, "") + `
+          </div>
+          <div class="item-frame">
+            <div class="deleter" onClick="deleteMe(this)">[X]</div>
+            <div class="handle"></div>
+            <div class="colors full has-color"></div>
+            <div class="colors black"></div>
+            <div class="frame folio selected-size"></div>
+            <div class="frame quarto"></div>
+            <div class="title">`+d[0]+`</div>
+            <div class="author">`+d[2]+`</div>
+            <div class="category">`+value+` : `+Array.from(d[3]).join(" ")+`</div>
+            <div class="page_count">`+d[4]+`</div>
+          </div>
+    `
     row.setAttribute("class", ["list-group-item","category-"+value, ifTag(d[3], 'a', 'tag-'),ifTag(d[3], 'b', 'tag-'),ifTag(d[3], 'c', 'tag-'),ifTag(d[3], 'a', 'show-tag-'),ifTag(d[3], 'b', 'show-tag-'),ifTag(d[3], 'c', 'show-tag-')].join(" "),)
     row.setAttribute("data-id", d[1])
     el1.appendChild(row)

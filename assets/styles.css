@@ -7,6 +7,7 @@ body {
   border: 5px solid rgb(248 65 76);
   border-radius: 25px;
   padding-left: 25px;
+  padding-right: 25px;
 }
 .page-dimension {
   margin-left: 100px;
@@ -30,6 +31,9 @@ body {
 .page-dimension input {
   padding: 0px;
   margin: 0px;
+}
+.custom_header_field {
+  width: 300px;
 }
 .intro {
   zoom: 0.75;
@@ -57,26 +61,33 @@ body {
 }
 .list-group-item{
   position: relative;
-  border: 1px solid black;
-  background: #50aad8;
-  width: 200px;
-  margin: 10px;
+  width: 280px;
   min-height: 42px;
 }
 /* info bar details */
+.item-frame {
+  position: relative;
+  border: 1px solid black;
+  background: white;
+  width: 280px;
+  margin: 10px;
+  min-height: 42px;
+
+}
 .handle{
   position: absolute;
   border: 1px solid black;
   background: #16839f75;
-  opacity: 0.25;
+  opacity: 0.025;
   height: 40px;
   width: 40px;
   z-index:5;
 }
 .deleter {
-  display: inline-block;
   background: red;
-  float: right;
+  position: absolute;
+  right: -26px;
+  top: 10px;
 }
 #example1 .deleter {
   display: none;
@@ -85,35 +96,57 @@ body {
   font-weight: bold;
   margin-left: 40px;
   position: absolute;
+  line-height: 0.8em;
 }
 .author {
   font-weight: lighter;
   margin-left: 40px;
   position: absolute;
-  margin-top: 20px;
+  bottom: 0px;
+  font-family: monospace;
 }
 .category {
   position: absolute;
   right: 0px;
   bottom: 0px;
+  color: #000000ad;
+}
+.page_count {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  font-family: monospace;
 }
 /* color details */
 .colors {
   width:10px;
-  height: 14px;
+  height: 20px;
   border: 1px solid black;
   position: absolute;
 }
 .colors.full {
   margin-top: 0px;
-  background: red;
+  background: linear-gradient(
+      0deg,
+      rgba(255, 0, 0, 1) 0%,
+      rgba(255, 154, 0, 1) 10%,
+      rgba(208, 222, 33, 1) 20%,
+      rgba(79, 220, 74, 1) 30%,
+      rgba(63, 218, 216, 1) 40%,
+      rgba(47, 201, 226, 1) 50%,
+      rgba(28, 127, 238, 1) 60%,
+      rgba(95, 21, 242, 1) 70%,
+      rgba(186, 12, 248, 1) 80%,
+      rgba(251, 7, 217, 1) 90%,
+      rgba(255, 0, 0, 1) 100%
+  );
+  display: none;
 }
-.colors.partial {
-  margin-top: 13px;
-  background: grey;
+.colors.full.has-color {
+  display: block;
 }
 .colors.black {
-  margin-top: 26px;
+  margin-top: 20px;
   background: black;
 }
  /* size details */
@@ -136,6 +169,9 @@ body {
   width: 10px;
   height: 10px;
 }
+.frame.selected-size {
+  background: #3a20689e;
+}
 /* !!!!!!!!!!!!!!!!!!!!!! COLUMN DIVIDER*/
 .column-header {
   font-weight: bolder;
@@ -153,6 +189,7 @@ body {
 }
 #example2 div.list-group-item {
   display: block;
+  margin-right: 20px;
 }
 /* !!!!!!!!!!!!!!!!!!!!!! Tags */
 .dot {
@@ -199,7 +236,6 @@ body {
   position: absolute;
   right: 0px;
   bottom: -10px;
-  z-index: -1;
 }
 /* !!!!!!!!!!!!!!!!!!!!!! Controls */
 .pdf-controls {

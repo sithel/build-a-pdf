@@ -67,6 +67,10 @@ async function embedAndPlacePage(pdfDoc, sourcePdfPage, meta) {
 }
 
 function drawHeader(newPage, meta) {
+  if (no_header_urls.indexOf(meta.fileName) >= 0) {
+    console.log("Skipping headers for ",meta)
+    return
+  }
   drawPageNumber(newPage, meta) // TODO : page number should return the end/start of text? for header to abut it?
   drawHeaderText(newPage, meta)
 }
@@ -92,6 +96,7 @@ function drawHeaderText(newPage, meta) {
 }
 
 function drawPageNumber(newPage, meta) {
+  console.log("Check here? ",meta)
   const pageNumText = meta.pageNumber + ""
   const pageNumWidth = meta.pageNumFont.widthOfTextAtSize(pageNumText, meta.size)
   const pageNumHeight = meta.pageNumFont.heightAtSize(meta.size)
