@@ -11,13 +11,17 @@ Don't forget, this is how to launch the server for local testing
 $ python -m SimpleHTTPServer 8000
 ```
 
+# Completed Features
+
+- Output PDF (definable height/width)
+  - has helpful pre-sets
+  - has info diagram
+- Generated Doc Content
+  - customizable page number size
+  - customizable gap between header & content
+
+
 # TODOs
-
-### Doc Creation
-
-Need to allow users to define height/width (in pts) of result PDF. Include buttons to auto-set values for Folio on Letter, Folio on A4, Quarto on Letter, Quarto on A4
-
-Include diagram of margins and where they come from
 
 ### Generated Doc Content
 
@@ -27,13 +31,37 @@ Need to scale header text to fit in the space provided!
 
 Need to generate Tabel of Contents
 
-Need to allow users the ability to set header gap & page number font size
+Need to vertically center content w/o headers
 
-### PDF Creation
 
-Need to define PDF object:
+### Tags & Categories
 
-Currently have something like `['Landscape (3 pages)', 'pdfs/landscape.pdf', 'six', new Set(['c'])]`. Now proposing:
+Need to settle on Tags list.
+
+Need to re-write elements so that Categories & Page Size & Print Levels are high level "suppress"
+
+Need to audit Tags so that they're 'AND' logic to show
+
+
+## PDF Creation
+
+Would be nice define PDF object:
+
+Currently have an array, notes from code:
+
+```
+    // 0 = display name
+    // 1 = PDF url
+    // 2 = user name
+    // 3 = tags
+    // 4 = page count
+    // 5 = isFolio
+    // 6 = hasColor
+...
+      ['Hard Crack', 'pdfs/six_sugar.pdf', 'six', new Set(), 1, true, false],
+```
+
+But at some point it'd be nice if it was:
 
 ```
 {
@@ -49,15 +77,7 @@ Currently have something like `['Landscape (3 pages)', 'pdfs/landscape.pdf', 'si
 }
 ```
 
-With each PDF listed under a Category.
-
-### Tags & Categories
-
-Need to settle on Tags & Categories list.
-
-Need to re-write elements so that Categories & Page Size & Print Levels are high level "suppress"
-
-Need to audit Tags so that they're 'AND' logic to show
+(though... maybe overkill? The array is working just fine for now... Array is certainly easier to export from a spreadsheet... )
 
 ### Non-Functioanl UI Cleanup
 

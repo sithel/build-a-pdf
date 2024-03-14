@@ -1,5 +1,6 @@
 function buildPdfEntries(entries, value, el1) {
   entries.forEach( d => {
+    console.log("Looking at : ",d);
     var row = document.createElement("div")
     row.innerHTML = `
           <div class="dot-box">
@@ -11,10 +12,10 @@ function buildPdfEntries(entries, value, el1) {
           <div class="item-frame">
             <div class="deleter" onClick="deleteMe(this)">[X]</div>
             <div class="handle"></div>
-            <div class="colors full has-color"></div>
+            <div class="colors full `+((d[6]) ? 'has-color' : '')+`"></div>
             <div class="colors black"></div>
-            <div class="frame folio selected-size"></div>
-            <div class="frame quarto"></div>
+            <div class="frame folio `+((d[5]) ? 'selected-size' : '')+`"></div>
+            <div class="frame quarto `+((!d[5]) ? 'selected-size' : '')+`"></div>
             <div class="title">`+d[0]+`</div>
             <div class="author">`+d[2]+`</div>
             <div class="category">`+value+` : `+Array.from(d[3]).join(" ")+`</div>

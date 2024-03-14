@@ -91,14 +91,14 @@ function set_page_dimensions(width, height) {
     Horizontal page content positioning : 
     <select name="cars" id="horizontal_page_positioning">
       <option value="inner">snug against binding</option>
-      <option value="center">centered</option>
+      <option value="center" selected>centered</option>
       <option value="outer">snug against fore edge</option>
     </select> <br/>
 
     Vertical page content positioning : 
     <select name="cars" id="vertical_page_positioning">
       <option value="top">snug against header</option>
-      <option value="center">centered</option>
+      <option value="center" selected>centered</option>
       <option value="bottom">snug against bottom</option>
     </select> <br/>
 
@@ -210,42 +210,43 @@ function set_page_dimensions(width, height) {
     // 5 = isFolio
     // 6 = hasColor
     {type: 'header', value: 'cover', label: 'Cover', entries: [
-      ['Title', 'pdfs/texasrachel_title.pdf', 'texasrachel', new Set(), 1, true, false],
-      ['Title', 'pdfs/six_title.pdf', 'six', new Set(), 1, true, true],
+      ['Title Page', 'pdfs/texasrachel_title.pdf', 'texasrachel', new Set(), 1, true, false],
+      ['Title Page', 'pdfs/six_title.pdf', 'six', new Set(), 1, true, false],
     ]},
     {type: 'header', value: 'meta', label: 'Helper Pages', entries: [
       ['blank (w/ headers)', 'pdfs/blank_page.pdf', 'texasrachel', new Set(), 1, true, false],
-      ['blank (w/o headers)', 'pdfs/super_blank_page.pdf', 'six', new Set(), 1, true, true],
+      ['blank (w/o headers)', 'pdfs/super_blank_page.pdf', 'six', new Set(), 1, true, false],
+    ]},
+    {type: 'header', value: 'appetizers', label: 'Appetizers', entries: [
+      ['Salsa Verde', 'pdfs/lark_1.pdf', 'lark', new Set(), 1, true, false],
+      ['Salsa Verde', 'pdfs/lark_5.pdf', 'lark', new Set(), 2, false, false],
+      ['Blue Ribbon White Bread', 'pdfs/texasrachel_bread.pdf', 'texasrachel', new Set(), 2, true, true],
+    ]},
+    {type: 'header', value: 'soups_n_salads', label: 'Soups \'n Salads', entries: [
+      ['Salad', 'pdfs/texasrachel_salad.pdf', 'texasrachel', new Set(), 1, true, false],
+      ['Cabbage Salad', 'pdfs/lark_4.pdf', 'lark', new Set(), 1, true, false],
+      ['Cabbage Salad', 'pdfs/lark_8.pdf', 'lark', new Set(), 2, false, false],
     ]},
     {type: 'header', value: 'mains', label: 'Mains', entries: [
       ['Main', 'pdfs/texasrachel_main.pdf', 'texasrachel', new Set(), 1, true, false],
-    ]},
-    {type: 'header', value: 'sides', label: 'Sides', entries: [
-      ['Recipe 1', 'pdfs/lark_1.pdf', 'lark', new Set(), 1, true, false],
-      ['Recipe 2', 'pdfs/lark_2.pdf', 'lark', new Set(), 1, true, false],
-      ['Recipe 3', 'pdfs/lark_3.pdf', 'lark', new Set(), 1, true, false],
-      ['Recipe 4', 'pdfs/lark_4.pdf', 'lark', new Set(), 1, true, false],
-      ['Recipe 1', 'pdfs/lark_5.pdf', 'lark', new Set(), 2, true, false],
-      ['Recipe 2', 'pdfs/lark_6.pdf', 'lark', new Set(), 2, true, false],
-      ['Recipe 3', 'pdfs/lark_7.pdf', 'lark', new Set(), 2, true, false],
-      ['Recipe 4', 'pdfs/lark_8.pdf', 'lark', new Set(), 2, true, false],
-    ]},
-    {type: 'header', value: 'soups_n_salads', label: 'Desserts', entries: [
-      ['Salad', 'pdfs/texasrachel_salad.pdf', 'texasrachel', new Set(), 1, true, false],
+      ['Korean BBQ Chicken', 'pdfs/lark_2.pdf', 'lark', new Set(), 1, true, false],
+      ['Korean BBQ Chicken', 'pdfs/lark_6.pdf', 'lark', new Set(), 2, false, false],
     ]},
     {type: 'header', value: 'dessert', label: 'Desserts', entries: [
       ['Cookies', 'pdfs/texasrachel_cookies.pdf', 'texasrachel', new Set(), 1, true, false],
+      ['Jammy Basards', 'pdfs/lark_7.pdf', 'lark', new Set(), 2, false, false],
+      ['Jammy Bastards', 'pdfs/lark_3.pdf', 'lark', new Set(), 1, true, false],
       ['Hard Crack', 'pdfs/six_sugar.pdf', 'six', new Set(), 1, true, false],
     ]},
-    {type: 'header', value: 'test', label: 'Random test', entries: [
-      ['RemedialJediTheology_TestPages_002', 'pdfs/RemedialJediTheology_TestPages_002 - AetherSeer.pdf', 'AetherSeer', new Set(), 1, true, false],
-      ['UrbeAurea_TestPages_001', 'pdfs/UrbeAurea_TestPages_001 - AetherSeer.pdf', 'AetherSeer', new Set(), 1, true, false],
-      ['UrbeAurea_TestPages_002', 'pdfs/UrbeAurea_TestPages_002 - AetherSeer.pdf', 'AetherSeer', new Set('b'), 1, true, false],
-      ['Cookie 1', 'pdfs/cookie_1.pdf', 'suko', new Set(['b']), 1, true, false],
-      ['Cookie 2', 'pdfs/cookie_2.pdf', 'suko', new Set(['b','c']), 1, true, false],
-      ['Tall (3 pages)', 'pdfs/tall.pdf', 'six', new Set(['a']), 1, true, false],
-      ['Landscape (3 pages)', 'pdfs/landscape.pdf', 'six', new Set(['c']), 1, true, false],
-      ]}
+    // {type: 'header', value: 'test', label: 'Random test', entries: [
+    //   ['RemedialJediTheology_TestPages_002', 'pdfs/RemedialJediTheology_TestPages_002 - AetherSeer.pdf', 'AetherSeer', new Set(), 1, true, false],
+    //   ['UrbeAurea_TestPages_001', 'pdfs/UrbeAurea_TestPages_001 - AetherSeer.pdf', 'AetherSeer', new Set(), 1, true, false],
+    //   ['UrbeAurea_TestPages_002', 'pdfs/UrbeAurea_TestPages_002 - AetherSeer.pdf', 'AetherSeer', new Set('b'), 1, true, false],
+    //   ['Cookie 1', 'pdfs/cookie_1.pdf', 'suko', new Set(['b']), 1, true, false],
+    //   ['Cookie 2', 'pdfs/cookie_2.pdf', 'suko', new Set(['b','c']), 1, true, false],
+    //   ['Tall (3 pages)', 'pdfs/tall.pdf', 'six', new Set(['a']), 1, true, false],
+    //   ['Landscape (3 pages)', 'pdfs/landscape.pdf', 'six', new Set(['c']), 1, true, false],
+    //   ]}
   ]
 
   const no_header_urls = data[0].entries.map(p => {return p[1]}) + ['pdfs/super_blank_page.pdf'];
@@ -256,8 +257,10 @@ function set_page_dimensions(width, height) {
   })
 
   function deleteMe(xButton) {
-    var rowToKill = xButton.parentElement
-    rowToKill.parentElement.removeChild(rowToKill)
+    var rowToKill = xButton.parentElement.parentElement;
+    var remover = rowToKill.parentElement;
+    console.log("Killing ",rowToKill)
+    remover.removeChild(rowToKill)
   }
 
   function makeOptions(tagName) {
