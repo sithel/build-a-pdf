@@ -106,6 +106,7 @@ function set_page_dimensions(width, height) {
     Verso header : 
     <select name="cars" id="verso_header">
       <option value="title">title</option>
+      <option value="author">author</option>
       <option value="nothing">nothing</option>
       <option value="section">section name</option>
     </select> 
@@ -114,6 +115,7 @@ function set_page_dimensions(width, height) {
 
     Recto header : 
     <select name="cars" id="recto_header">
+      <option value="author">author</option>
       <option value="section">section name</option>
       <option value="title">title</option>
       <option value="nothing">nothing</option>
@@ -253,6 +255,12 @@ function set_page_dimensions(width, height) {
     //   ['Landscape (3 pages)', 'pdfs/landscape.pdf', 'six', new Set(['c']), 1, true, false],
     //   ]}
   ]
+
+  function look_up_recipe_by_url(url) {
+    return data.map( c => {
+      return c.entries.filter(r => r[1] == url)
+    }).flat()
+  }
 
   const no_header_urls = data[0].entries.map(p => {return p[1]}) + ['pdfs/super_blank_page.pdf'];
 

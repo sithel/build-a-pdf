@@ -29,8 +29,6 @@ Need to include free-form text Header option
 
 Need to scale header text to fit in the space provided!
 
-Need to generate Tabel of Contents
-
 Need to vertically center content w/o headers
 
 

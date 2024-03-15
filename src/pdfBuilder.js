@@ -23,6 +23,7 @@ async function buildThatPdf(fileNames, isPreview) {
     title: "Renegade PDF Potluck 2024"
   }
 
+  meta.fileNames = fileNames
   for(let fileName of fileNames) {
     await addPdfContent(pdfDoc, fileName, meta);
   }
@@ -35,7 +36,7 @@ async function buildThatPdf(fileNames, isPreview) {
 }
 
 async function addPdfContent(pdfDoc, fileName, meta) {
-  if (fileName == SPECIAL_TOC_FILENAME_FOLIO || filename == SPECIAL_TOC_FILENAME_QUARTO) {
+  if (fileName == SPECIAL_TOC_FILENAME_FOLIO || fileName == SPECIAL_TOC_FILENAME_QUARTO) {
     window.addToC(pdfDoc, fileName, meta);
   } else {
     await pullAndPlacePdf(pdfDoc, fileName, meta);
@@ -76,7 +77,8 @@ async function embedAndPlacePage(pdfDoc, sourcePdfPage, meta) {
     case 'bottom': var y = 0;         break;
   }
   newPage.drawPage(embeddedPage, { x: x, y: y, xScale: scale, yScale: scale});
-  drawHeader(newPage, {isRecto: isRecto, pageNumber: pageNumber, scale: scale, vgap: vgap, hgap: hgap, ...meta})
+  const entry = look_up_recipe_by_url(meta.fileName)
+  drawHeader(newPage, {recipe: entry[0], isRecto: isRecto, pageNumber: pageNumber, scale: scale, vgap: vgap, hgap: hgap, ...meta})
 }
 
 function drawHeader(newPage, meta) {
@@ -90,9 +92,13 @@ function drawHeader(newPage, meta) {
 
 function drawHeaderText(newPage, meta) {
   switch( (meta.isRecto) ? meta.rectoHeader : meta.versoHeader) {
-    case 'section': var pageText = meta.fileName;     break;
+
+    // TODO : add those html fields to the meta and add the text option
+
+    case 'section': var pageText = meta.recipe[0];    break;
     case 'nothing': var pageText = "";                break;
     case 'title': var pageText = meta.title;          break;
+    case 'author': var pageText = meta.recipe[2];     break;
   }
   const textWidth = meta.pageNumFont.widthOfTextAtSize(pageText, meta.size)
   const textHeight = meta.pageNumFont.heightAtSize(meta.size)
