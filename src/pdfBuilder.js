@@ -20,6 +20,8 @@ async function buildThatPdf(fileNames, isPreview) {
     vPagePlacement: document.getElementById("vertical_page_positioning").value,
     rectoHeader:  document.getElementById("recto_header").value,
     versoHeader:  document.getElementById("verso_header").value,
+    rectoCustomHeader: document.getElementById("recto_custom_header").value,
+    versoCustomHeader: document.getElementById("verso_custom_header").value,
     title: "Renegade PDF Potluck 2024"
   }
 
@@ -78,7 +80,14 @@ async function embedAndPlacePage(pdfDoc, sourcePdfPage, meta) {
   }
   newPage.drawPage(embeddedPage, { x: x, y: y, xScale: scale, yScale: scale});
   const entry = look_up_recipe_by_url(meta.fileName)
-  drawHeader(newPage, {recipe: entry[0], isRecto: isRecto, pageNumber: pageNumber, scale: scale, vgap: vgap, hgap: hgap, ...meta})
+  drawHeader(newPage, {
+    recipe: entry[0], 
+    isRecto: isRecto, 
+    pageNumber: pageNumber, 
+    scale: scale, 
+    vgap: vgap, 
+    hgap: hgap, 
+    ...meta})
 }
 
 function drawHeader(newPage, meta) {
@@ -92,13 +101,11 @@ function drawHeader(newPage, meta) {
 
 function drawHeaderText(newPage, meta) {
   switch( (meta.isRecto) ? meta.rectoHeader : meta.versoHeader) {
-
-    // TODO : add those html fields to the meta and add the text option
-
     case 'section': var pageText = meta.recipe[0];    break;
     case 'nothing': var pageText = "";                break;
     case 'title': var pageText = meta.title;          break;
     case 'author': var pageText = meta.recipe[2];     break;
+    case 'custom': var pageText = (meta.isRecto) ? meta.rectoCustomHeader : meta.versoCustomHeader;     break;
   }
   const textWidth = meta.pageNumFont.widthOfTextAtSize(pageText, meta.size)
   const textHeight = meta.pageNumFont.heightAtSize(meta.size)

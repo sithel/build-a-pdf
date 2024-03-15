@@ -18,26 +18,26 @@
 
 <center>
 <div class="intro">
-<h2>PDF Picnic</h2>
-
-It's easy
-
-<br>
+<h1>Join us for a Renegade Bindery PDF Potluck!</h1>
 <h3> Step 1. Prepare your contributeion</h3>
-Typeset a recipe. Typeset three! Submit a cover or weird book/food fan art or photos. What are <i>you</i> bringing to the potluck? 
+Typeset a recipe. Typeset three! Submit a cover or weird book/food fan art or photos. <br>
+<a href="https://forms.gle/FLvRxZeYsnQa2oS2A" target=”_blank”><b>Fill out the PDF Entry Form</b></a>
+<BR>What are <i>you</i> bringing to the potluck? 
 
 <br>
 <h3>Step 2. Load up your plate</h3>
-All submissions are due by midnight, Saturday March 23rd (PST). Once they're turned in, I'll lay out the spread and you'll be able to select which pages/recipes and the order they go in to assemble your personal Renegade PDF Potluck typeset! 
+All submissions are due by <b>midnight, Saturday March 23rd (PST).</b> Once they're turned in, six will lay out the spread and you'll be able to select which pages/recipes and the order they go in to assemble your personal Renegade PDF Potluck typeset! 
 
 
 <br>
 <h3>Step 3. Potluck 'n Party!</h3>
-Share your bound copy and/or freakish food creation on April 1st in celebration of Edible Book Day. In the week leading up to it, we'll have a couple cook 'n craft alongs. Just as a meal can be greatly enjoyed broken into several courses, so can a book be pleasantly crafted across several sessions. Monday for text block sewing while XXX prepares for us YYY. Wednesday for edge management. Trimming, sanding, any sort of decorations (headbands, painting, etc) are encouraged while AAA cooks up BBB. Finally on Friday we'll build our case and case in to completion while EEEE shows us how to cook FFFF. 
+The party starts Sunday, March 24th -- a Discord channel will open up and last year's winners will be announce!
+<BR> In the week leading up to Edible Book Day, we'll have a couple cook 'n craft alongs. Just as a meal can be greatly enjoyed broken into several courses, so can a book be pleasantly crafted across several sessions. 
+<BR>Keep an eye on the Discord for more details to come!
 
 <br>
 <h3>Step 4. Enjoy</h3>
-Photos of this year's results will be shared and last year's winners announced! 
+Share your bound copy and/or freakish food creation on <b>April 1st in celebration of Edible Book Day.</b>
 </div>
 
 
@@ -109,8 +109,9 @@ function set_page_dimensions(width, height) {
       <option value="author">author</option>
       <option value="nothing">nothing</option>
       <option value="section">section name</option>
+      <option value="custom">custom header</option>
     </select> 
-    <input type="text" class="custom_header_field" name="verso_custom_header">
+    <input type="text" id="verso_custom_header" class="custom_header_field" name="verso_custom_header">
     <br/>
 
     Recto header : 
@@ -119,8 +120,9 @@ function set_page_dimensions(width, height) {
       <option value="section">section name</option>
       <option value="title">title</option>
       <option value="nothing">nothing</option>
+      <option value="custom">custom header</option>
     </select> 
-    <input type="text" class="custom_header_field" name="recto_custom_header">
+    <input type="text" id="recto_custom_header" class="custom_header_field" name="recto_custom_header">
     <br/>
   </td></tr></table>
 </div>
@@ -129,7 +131,9 @@ function set_page_dimensions(width, height) {
 <div class="page-imported-content exampler">
   <table><tr><td colspan="2" align=center>
     <b>Collect your content</b><br>
-    Grab recipes on the left by their weird "squares on left" shape and drag them over to add to your book. Don't preview w/ an empty book, things will break.<br>
+    <i>We've provided some <b>TEST CONTENT</b> to start with so you can have an idea of how the whole thing works before you craft your entries. </i><br>
+    Grab recipes on the left by their weird set of squares and drag them over to add to your book.<br>
+    <br>
       <input type="button" value="Preview!" id="report" onClick="buildThatPdf(sortable2.toArray(), true)">
       <input type="button" value="Download!" id="report" onClick="buildThatPdf(sortable2.toArray(), false)">
     </td></tr>
@@ -181,10 +185,13 @@ function set_page_dimensions(width, height) {
 
 <script language="javascript">
   var tags = [
-    { value: "a", label: "Vegetarian" },
-    { value: "b", label: "Vegan" },
+    { value: "a", label: "Vegan" },
+    { value: "b", label: "Vegetarian" },
     { value: "c", label: "Lactose Free" },
-    { value: "d", label: "Spicy" },
+    { value: "d", label: "Kosher" },
+    { value: "e", label: "Sweet" },
+    { value: "f", label: "Spicy" },
+    { value: "g", label: "Easy" },
   ]
   var tagInfoBox = document.getElementById('tag-info-box');
   console.log("infobox? ",tagInfoBox)
@@ -196,7 +203,7 @@ function set_page_dimensions(width, height) {
 `
     console.log("Rebecca : ",s)
     return acc + s
-  }, "Filter <b>Staging</b> content by tags: ");
+  }, "(ignore this section for now-- tags and filtering by tags will be implemented soon!) : ");
   console.log("And done w/ ",z)
   tagInfoBox.innerHTML = z;
 </script>

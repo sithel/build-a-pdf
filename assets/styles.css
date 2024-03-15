@@ -38,9 +38,13 @@ body {
 .intro {
   zoom: 0.75;
   text-align: center;
-  opacity: 0.75; 
-  width: 60%;
-  padding: 0% 20%;
+  opacity: 0.8; 
+  background: white;
+  border: 5px solid rgb(248 65 76);
+  border-radius: 25px; 
+  margin: 0% 20%;
+  padding: 10px 50px;
+  margin-bottom: 25px;
 }
 
 #example1, #example2 {
@@ -221,6 +225,9 @@ body {
 }
 .tag-a,.tag-b,.tag-c {
   opacity: 1;
+}
+.tag-control-box {
+  opacity: 0.5;
 }
 .tag-control-box .dot {
   display: inline-block;
