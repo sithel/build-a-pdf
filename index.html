@@ -8,6 +8,7 @@
     <script src="src/pdf-lib.js"></script>
     <script src="src/jszip.js"></script>
     <script src="src/file-saver.js"></script>
+    <script src="src/tocAssembler.js"></script>
     <script src="src/pdfBuilder.js"></script>
     <script src="src/uiHelpers.js"></script>
 </head>
@@ -200,6 +201,8 @@ function set_page_dimensions(width, height) {
 
 
 <script type="text/javascript">
+  const SPECIAL_TOC_FILENAME_FOLIO = "toc_filename_folio"
+  const SPECIAL_TOC_FILENAME_QUARTO = "toc_filename_quarto"
   const el1 = document.getElementById('example1');
   const data = [
     // 0 = display name
@@ -214,6 +217,8 @@ function set_page_dimensions(width, height) {
       ['Title Page', 'pdfs/six_title.pdf', 'six', new Set(), 1, true, false],
     ]},
     {type: 'header', value: 'meta', label: 'Helper Pages', entries: [
+      ['Table of Contents', SPECIAL_TOC_FILENAME_FOLIO, 'six', new Set(), 1, false, false],
+      ['Table of Contents', SPECIAL_TOC_FILENAME_QUARTO, 'six', new Set(), 1, true, false],
       ['blank (w/ headers)', 'pdfs/blank_page.pdf', 'texasrachel', new Set(), 1, true, false],
       ['blank (w/o headers)', 'pdfs/super_blank_page.pdf', 'six', new Set(), 1, true, false],
     ]},

@@ -24,7 +24,7 @@ async function buildThatPdf(fileNames, isPreview) {
   }
 
   for(let fileName of fileNames) {
-    await pullAndPlacePdf(pdfDoc, fileName, meta);
+    await addPdfContent(pdfDoc, fileName, meta);
   }
   
   if (isPreview) {
@@ -32,6 +32,19 @@ async function buildThatPdf(fileNames, isPreview) {
   } else {
     makeTheZip(pdfDoc)
   }
+}
+
+async function addPdfContent(pdfDoc, fileName, meta) {
+  if (fileName == SPECIAL_TOC_FILENAME_FOLIO || filename == SPECIAL_TOC_FILENAME_QUARTO) {
+    window.addToC(pdfDoc, fileName, meta);
+  } else {
+    await pullAndPlacePdf(pdfDoc, fileName, meta);
+  }
+}
+
+async function addToC(pdfDoc, fileName, meta) {
+  const newPage = pdfDoc.addPage(meta.dimensions)
+  buildToc(newPage, meta, fileName == SPECIAL_TOC_FILENAME_FOLIO);
 }
 
 async function pullAndPlacePdf(pdfDoc, fileName, meta) {
