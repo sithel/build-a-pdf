@@ -22,7 +22,8 @@ async function buildThatPdf(fileNames, isPreview) {
     versoHeader:  document.getElementById("verso_header").value,
     rectoCustomHeader: document.getElementById("recto_custom_header").value,
     versoCustomHeader: document.getElementById("verso_custom_header").value,
-    title: "Renegade PDF Potluck 2024"
+    title: "Renegade PDF Potluck 2024",
+    debugOutline: document.getElementById("debug_box_outline").checked
   }
 
   meta.fileNames = fileNames
@@ -79,6 +80,19 @@ async function embedAndPlacePage(pdfDoc, sourcePdfPage, meta) {
     case 'bottom': var y = 0;         break;
   }
   newPage.drawPage(embeddedPage, { x: x, y: y, xScale: scale, yScale: scale});
+  if (meta.debugOutline) {
+    newPage.drawRectangle({
+      x: x,
+      y: y,
+      width: sourcePdfPage.getWidth() * scale,
+      height: sourcePdfPage.getHeight() * scale,
+      borderWidth: 2,
+      borderColor: meta.color,
+      color: meta.color,
+      opacity: 0.0,
+      borderOpacity: 0.75,
+    })
+  }
   const entry = look_up_recipe_by_url(meta.fileName)
   drawHeader(newPage, {
     recipe: entry[0], 

@@ -104,29 +104,34 @@ function set_page_dimensions(width, height) {
     </select> <br/>
 
     Verso header : 
-    <select name="cars" id="verso_header">
+    <select name="cars" id="verso_header" onChange="versoChange(this)">
       <option value="title">title</option>
       <option value="author">author</option>
       <option value="nothing">nothing</option>
       <option value="section">section name</option>
       <option value="custom">custom header</option>
     </select> 
-    <input type="text" id="verso_custom_header" class="custom_header_field" name="verso_custom_header">
+    <input type="text" id="verso_custom_header" class="custom_header_field" name="verso_custom_header" style="display:none;">
     <br/>
 
     Recto header : 
-    <select name="cars" id="recto_header">
+    <select name="cars" id="recto_header" onChange="rectoChange(this)">
       <option value="author">author</option>
       <option value="section">section name</option>
       <option value="title">title</option>
       <option value="nothing">nothing</option>
       <option value="custom">custom header</option>
     </select> 
-    <input type="text" id="recto_custom_header" class="custom_header_field" name="recto_custom_header">
+    <input type="text" id="recto_custom_header" class="custom_header_field" name="recto_custom_header" style="display:none;">
     <br/>
+
+    Outline the PDF content (for debugging purposes): <input type="checkbox" id="debug_box_outline">
   </td></tr></table>
 </div>
 
+<div class="disclaimer">
+  This page/tool is being actively worked on. There's still a couple bugs to be squashed and features to be ironed out. This is a proof of concept demo ( & you can expect a more working version by Sunday March 24th)
+</div>
 
 <div class="page-imported-content exampler">
   <table><tr><td colspan="2" align=center>
@@ -189,9 +194,7 @@ function set_page_dimensions(width, height) {
     { value: "b", label: "Vegetarian" },
     { value: "c", label: "Lactose Free" },
     { value: "d", label: "Kosher" },
-    { value: "e", label: "Sweet" },
-    { value: "f", label: "Spicy" },
-    { value: "g", label: "Easy" },
+    { value: "e", label: "Gluten Free" },
   ]
   var tagInfoBox = document.getElementById('tag-info-box');
   console.log("infobox? ",tagInfoBox)
@@ -221,7 +224,7 @@ function set_page_dimensions(width, height) {
     // 4 = page count
     // 5 = isFolio
     // 6 = hasColor
-    {type: 'header', value: 'cover', label: 'Cover', entries: [
+    {type: 'header', value: 'cover', label: 'Title Pages', entries: [
       ['Title Page', 'pdfs/texasrachel_title.pdf', 'texasrachel', new Set(), 1, true, false],
       ['Title Page', 'pdfs/six_title.pdf', 'six', new Set(), 1, true, false],
     ]},
@@ -232,9 +235,11 @@ function set_page_dimensions(width, height) {
       ['blank (w/o headers)', 'pdfs/super_blank_page.pdf', 'six', new Set(), 1, true, false],
     ]},
     {type: 'header', value: 'appetizers', label: 'Appetizers', entries: [
+      ['Blue Ribbon White Bread', 'pdfs/texasrachel_bread.pdf', 'texasrachel', new Set(), 2, true, true],
+    ]},
+    {type: 'header', value: 'sides', label: 'Sides', entries: [
       ['Salsa Verde', 'pdfs/lark_1.pdf', 'lark', new Set(), 1, true, false],
       ['Salsa Verde', 'pdfs/lark_5.pdf', 'lark', new Set(), 2, false, false],
-      ['Blue Ribbon White Bread', 'pdfs/texasrachel_bread.pdf', 'texasrachel', new Set(), 2, true, true],
     ]},
     {type: 'header', value: 'soups_n_salads', label: 'Soups \'n Salads', entries: [
       ['Salad', 'pdfs/texasrachel_salad.pdf', 'texasrachel', new Set(), 1, true, false],

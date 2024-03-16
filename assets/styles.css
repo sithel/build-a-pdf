@@ -35,6 +35,18 @@ body {
 .custom_header_field {
   width: 300px;
 }
+.disclaimer {
+  text-align: center;
+  opacity: 0.8; 
+  color: white;
+  background: rgb(248 65 76);
+  border: 5px solid rgb(248 65 76);
+  border-radius: 25px; 
+  margin: 0% 20%;
+  padding: 10px 50px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
 .intro {
   zoom: 0.75;
   text-align: center;

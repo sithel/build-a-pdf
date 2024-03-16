@@ -61,6 +61,21 @@ function toggleTag(el) {
   })
 }
 
+function versoChange(dropDown) {
+  var textField = document.getElementById("verso_custom_header")
+  if(dropDown.value == "custom")
+    textField.style.display = "inline-block";
+  else 
+    textField.style.display = "none";
+}
+
+function rectoChange(dropDown) {
+  var textField = document.getElementById("recto_custom_header")
+  if(dropDown.value == "custom")
+    textField.style.display = "inline-block";
+  else 
+    textField.style.display = "none";
+}
 
 
 
