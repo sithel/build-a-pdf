@@ -6,6 +6,7 @@
     <!-- jsDelivr :: Sortable :: Latest (https://www.jsdelivr.com/package/npm/sortablejs) -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="src/pdf-lib.js"></script>
+    <script src="https://unpkg.com/@pdf-lib/fontkit/dist/fontkit.umd.min.js"></script>
     <script src="src/jszip.js"></script>
     <script src="src/file-saver.js"></script>
     <script src="src/tocAssembler.js"></script>
@@ -115,7 +116,7 @@ function set_page_dimensions(width, height) {
     <br/>
 
     Recto header : 
-    <select name="cars" id="recto_header" onChange="rectoChange(this)">
+    <select name="recto_header" id="recto_header" onChange="rectoChange(this)">
       <option value="author">author</option>
       <option value="section">section name</option>
       <option value="title">title</option>
@@ -123,6 +124,15 @@ function set_page_dimensions(width, height) {
       <option value="custom">custom header</option>
     </select> 
     <input type="text" id="recto_custom_header" class="custom_header_field" name="recto_custom_header" style="display:none;">
+    <br/>
+    Header & Table of Contents font :
+    <select name="hearer_toc_font" id="hearer_toc_font">
+      <option value="TimesRoman">Times Roman</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Courier">Courier</option>
+      <option value="Helvetica">Helvetica</option>
+      <option value="ComicSans">Comic Sans MS</option>
+    </select> 
     <br/>
 
     Outline the PDF content (for debugging purposes): <input type="checkbox" id="debug_box_outline">
@@ -140,8 +150,8 @@ function set_page_dimensions(width, height) {
     <i>We've provided some <b>TEST CONTENT</b> to start with so you can have an idea of how the whole thing works before you craft your entries. </i><br>
     Grab recipes on the left by their weird set of squares and drag them over to add to your book.<br>
     <br>
-      <input type="button" value="Preview!" id="report" onClick="buildThatPdf(sortable2.toArray(), true)">
-      <input type="button" value="Download!" id="report" onClick="buildThatPdf(sortable2.toArray(), false)">
+      <input type="button" value="Preview!" id="previewTop" onClick="buildThatPdf(sortable2.toArray(), true)">
+      <input type="button" value="Download!" id="download" onClick="buildThatPdf(sortable2.toArray(), false)">
     </td></tr>
     <tr style="vertical-align: top;"><td>
       The Bounty Before You
@@ -180,7 +190,7 @@ function set_page_dimensions(width, height) {
 </div>
 
 <div class="pdf-preview-frame" style="display: none">
-  <b>Preview</b><br>
+  <input type="button" value="Refresh Preview!" id="previewBottom" onClick="buildThatPdf(sortable2.toArray(), true)"><br>
   <iframe id="pdf"></iframe>
 </div>
 
@@ -243,17 +253,17 @@ function set_page_dimensions(width, height) {
       ['Salsa Verde', 'pdfs/lark_5.pdf', 'lark', new Set(), 2, false, false],
     ]},
     {type: 'header', value: 'soups_n_salads', label: 'Soups \'n Salads', entries: [
-      ['Salad', 'pdfs/texasrachel_salad.pdf', 'texasrachel', new Set(), 1, true, false],
+      ['Apple Chicken Salad', 'pdfs/texasrachel_salad.pdf', 'texasrachel', new Set(), 1, true, false],
       ['Cabbage Salad', 'pdfs/lark_4.pdf', 'lark', new Set(), 1, true, false],
       ['Cabbage Salad', 'pdfs/lark_8.pdf', 'lark', new Set(), 2, false, false],
     ]},
     {type: 'header', value: 'mains', label: 'Mains', entries: [
-      ['Main', 'pdfs/texasrachel_main.pdf', 'texasrachel', new Set(), 1, true, false],
+      ['Beef Enchiladas', 'pdfs/texasrachel_main.pdf', 'texasrachel', new Set(), 1, true, false],
       ['Korean BBQ Chicken', 'pdfs/lark_2.pdf', 'lark', new Set(), 1, true, false],
       ['Korean BBQ Chicken', 'pdfs/lark_6.pdf', 'lark', new Set(), 2, false, false],
     ]},
     {type: 'header', value: 'dessert', label: 'Desserts', entries: [
-      ['Cookies', 'pdfs/texasrachel_cookies.pdf', 'texasrachel', new Set(), 1, true, false],
+      ['Ginger Cookies', 'pdfs/texasrachel_cookies.pdf', 'texasrachel', new Set(), 1, true, false],
       ['Jammy Basards', 'pdfs/lark_7.pdf', 'lark', new Set(), 2, false, false],
       ['Jammy Bastards', 'pdfs/lark_3.pdf', 'lark', new Set(), 1, true, false],
       ['Hard Crack', 'pdfs/six_sugar.pdf', 'six', new Set(), 1, true, false],

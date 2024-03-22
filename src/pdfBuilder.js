@@ -6,12 +6,27 @@ async function buildThatPdf(fileNames, isPreview) {
 
   const exportWidth = parseInt(document.getElementById("exported_width").value)
   const exportHeight = parseInt(document.getElementById("exported_height").value)
-
-
+  
   const pdfDoc = await PDFLib.PDFDocument.create()
 
+  const headerFontEnum = document.getElementById("hearer_toc_font").value
+
+  if (headerFontEnum == "TimesRoman") {
+    var headerFont = await pdfDoc.embedFont(PDFLib.StandardFonts.TimesRoman)
+  } else if (headerFontEnum == "Courier") {
+    var headerFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Courier)
+  } else if (headerFontEnum == "Helvetica") {
+    var headerFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica)
+  } else if (headerFontEnum == "ComicSans") {
+    pdfDoc.registerFontkit(window.fontkit);
+    var headerFont = await pdfDoc.embedFont(await fetch('assets/ComicSans.ttf').then(res => res.arrayBuffer()));
+  } else {
+    pdfDoc.registerFontkit(window.fontkit);
+    var headerFont = await pdfDoc.embedFont(await fetch('assets/GEORGIA.TTF').then(res => res.arrayBuffer()));
+  }
+
   const meta = {
-    pageNumFont : await pdfDoc.embedFont(PDFLib.StandardFonts.TimesRoman),
+    pageNumFont : headerFont,
     color : PDFLib.rgb(0,0,0),
     holdForHeader: fontSize + padding,
     size: fontSize,
@@ -48,7 +63,7 @@ async function addPdfContent(pdfDoc, fileName, meta) {
 
 async function addToC(pdfDoc, fileName, meta) {
   const newPage = pdfDoc.addPage(meta.dimensions)
-  buildToc(newPage, meta, fileName == SPECIAL_TOC_FILENAME_FOLIO);
+  buildToc(pdfDoc, newPage, meta, fileName == SPECIAL_TOC_FILENAME_FOLIO);
 }
 
 async function pullAndPlacePdf(pdfDoc, fileName, meta) {
@@ -63,7 +78,6 @@ async function embedAndPlacePage(pdfDoc, sourcePdfPage, meta) {
   const newPage = pdfDoc.addPage(meta.dimensions)
   const pageNumber = pdfDoc.getPageCount()
   console.log("===========["+meta.fileName+"]")
-  console.log("   ["+meta.sourcePageNumber+"]   newpage (",newPage.getWidth(),", ",newPage.getHeight(),")    embeddedPage (",embeddedPage.width,", ",embeddedPage.height,") ")
 
   var isRecto = pageNumber % 2 == 1
   var scale = Math.min(newPage.getWidth() / sourcePdfPage.getWidth(), (newPage.getHeight() - meta.holdForHeader) / sourcePdfPage.getHeight())
@@ -106,7 +120,7 @@ async function embedAndPlacePage(pdfDoc, sourcePdfPage, meta) {
 
 function drawHeader(newPage, meta) {
   if (no_header_urls.indexOf(meta.fileName) >= 0) {
-    console.log("Skipping headers for ",meta)
+    console.log("Skipping headers for ",meta.fileName)
     return
   }
   drawPageNumber(newPage, meta) // TODO : page number should return the end/start of text? for header to abut it?
@@ -136,7 +150,6 @@ function drawHeaderText(newPage, meta) {
 }
 
 function drawPageNumber(newPage, meta) {
-  console.log("Check here? ",meta)
   const pageNumText = meta.pageNumber + ""
   const pageNumWidth = meta.pageNumFont.widthOfTextAtSize(pageNumText, meta.size)
   const pageNumHeight = meta.pageNumFont.heightAtSize(meta.size)
