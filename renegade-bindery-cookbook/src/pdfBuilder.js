@@ -28,6 +28,7 @@ async function buildThatPdf(fileNames, isPreview) {
   const meta = {
     pageNumFont : headerFont,
     color : PDFLib.rgb(0,0,0),
+    headerPadding: padding,
     holdForHeader: fontSize + padding,
     size: fontSize,
     dimensions: [exportWidth, exportHeight],
@@ -78,10 +79,21 @@ async function embedAndPlacePage(pdfDoc, sourcePdfPage, meta) {
   const newPage = pdfDoc.addPage(meta.dimensions)
   const pageNumber = pdfDoc.getPageCount()
   console.log("===========["+meta.fileName+"]")
+  const entry = look_up_recipe_by_url(meta.fileName)[0]
 
   var isRecto = pageNumber % 2 == 1
-  var scale = Math.min(newPage.getWidth() / sourcePdfPage.getWidth(), (newPage.getHeight() - meta.holdForHeader) / sourcePdfPage.getHeight())
-  var vgap = newPage.getHeight() - meta.holdForHeader - sourcePdfPage.getHeight()*scale
+
+  const page_top = drawHeader(newPage, {
+    recipe: entry, 
+    isRecto: isRecto, 
+    pageNumber: pageNumber, 
+    scale: scale, 
+    vgap: vgap, 
+    hgap: hgap, 
+    ...meta})
+  // newPage.getHeight() - meta.holdForHeader (previous)
+  var scale = Math.min(newPage.getWidth() / sourcePdfPage.getWidth(), page_top / sourcePdfPage.getHeight())
+  var vgap = page_top - sourcePdfPage.getHeight()*scale
   var hgap = newPage.getWidth() - sourcePdfPage.getWidth() * scale
   switch(meta.hPagePlacement){
     case 'inner': var x = (isRecto) ? 0 : hgap;     break;
@@ -107,27 +119,24 @@ async function embedAndPlacePage(pdfDoc, sourcePdfPage, meta) {
       borderOpacity: 0.75,
     })
   }
-  const entry = look_up_recipe_by_url(meta.fileName)
-  drawHeader(newPage, {
-    recipe: entry[0], 
-    isRecto: isRecto, 
-    pageNumber: pageNumber, 
-    scale: scale, 
-    vgap: vgap, 
-    hgap: hgap, 
-    ...meta})
 }
 
+/**
+ * @return y - max height PDF should reach to
+ */
 function drawHeader(newPage, meta) {
   if (no_header_urls.indexOf(meta.fileName) >= 0) {
     console.log("Skipping headers for ",meta.fileName)
-    return
+    return newPage.getHeight()
   }
-  drawPageNumber(newPage, meta) // TODO : page number should return the end/start of text? for header to abut it?
-  drawHeaderText(newPage, meta)
+  let y, x;
+  [y, x] = drawPageNumber(newPage, meta)
+  let header_y = drawHeaderText(newPage, meta, y, x) - meta.headerPadding
+  console.log(" drawHeader : "+header_y+" vs "+newPage.getHeight()+" - "+(meta.size*1.25)+" or "+meta.headerPadding)
+  return header_y
 }
 
-function drawHeaderText(newPage, meta) {
+function drawHeaderText(newPage, meta, num_y, num_x) {
   switch( (meta.isRecto) ? meta.rectoHeader : meta.versoHeader) {
     case 'section': var pageText = meta.recipe[0];    break;
     case 'nothing': var pageText = "";                break;
@@ -138,17 +147,22 @@ function drawHeaderText(newPage, meta) {
   const textWidth = meta.pageNumFont.widthOfTextAtSize(pageText, meta.size)
   const textHeight = meta.pageNumFont.heightAtSize(meta.size)
   var vgap = meta.holdForHeader - textHeight
-  var xgap = newPage.getWidth() - textWidth
+  var xgap = (meta.isRecto) ? num_x - textWidth : newPage.getWidth() - textWidth - num_x
+  const y = newPage.getHeight() - meta.size*1.25
   newPage.drawText(pageText, {
-    x: xgap/2.0,
-    y: newPage.getHeight() - meta.size*1.25,// - vgap/2,
+    x: (meta.isRecto) ? xgap/2.0 : xgap/2.0 + num_x,
+    y: y,
     font: meta.pageNumFont,
     size: meta.size,
     color: meta.color,
     lineHeight: meta.size,
   })
+  return y
 }
 
+/**
+ * @return [y (lower left) of text, x (edge of text closest to center span)]
+ */
 function drawPageNumber(newPage, meta) {
   const pageNumText = meta.pageNumber + ""
   const pageNumWidth = meta.pageNumFont.widthOfTextAtSize(pageNumText, meta.size)
@@ -156,14 +170,16 @@ function drawPageNumber(newPage, meta) {
   var vgap = meta.holdForHeader - pageNumHeight
   var padding = 2
   var x = (meta.isRecto) ? newPage.getWidth() - pageNumWidth - padding : padding
+  var y = newPage.getHeight() - meta.size*1.25 // pageNumHeight - vgap/2,
   newPage.drawText(pageNumText, {
     x: x,
-    y: newPage.getHeight() - meta.size*1.25,// pageNumHeight - vgap/2,
+    y: y,
     font: meta.pageNumFont,
     size: meta.size,
     color: meta.color,
     lineHeight: meta.size,
   })
+  return [y, (meta.isRecto) ? x : x + pageNumWidth]
 }
 
 async function makeTheZip(pdfToSave) {

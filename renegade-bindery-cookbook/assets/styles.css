@@ -66,6 +66,7 @@ body {
   margin: 12px;
   background: #ff000021;
   border-radius: 20px;
+  padding-bottom: 50px;
 }
 #example1 {
   overflow-y:auto;
