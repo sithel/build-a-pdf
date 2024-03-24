@@ -1,0 +1,303 @@
+body {
+  background: url(picnic_blanket_background.jpeg);
+}
+.page-dimension table, .page-generated-content table, .page-imported-content table{
+  width: 600px;
+  background: white;
+  border: 5px solid rgb(248 65 76);
+  border-radius: 25px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.page-dimension {
+  margin-left: 100px;
+}
+.page-imported-content {
+  margin-top: 20px;
+}
+.page-generated-content{
+  margin-top: 20px;
+  margin-left: 50px;
+}
+.page-dimension img {
+  width: 300px;
+}
+.page-dimension .note {
+  font-size: x-small;
+}
+.page-dimension .dimensions-input {
+  margin-left: 20px;
+}
+.page-dimension input {
+  padding: 0px;
+  margin: 0px;
+}
+.custom_header_field {
+  width: 300px;
+}
+.disclaimer {
+  text-align: center;
+  opacity: 0.8; 
+  color: white;
+  background: rgb(248 65 76);
+  border: 5px solid rgb(248 65 76);
+  border-radius: 25px; 
+  margin: 0% 20%;
+  padding: 10px 50px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.intro {
+  zoom: 0.75;
+  text-align: center;
+  opacity: 0.8; 
+  background: white;
+  border: 5px solid rgb(248 65 76);
+  border-radius: 25px; 
+  margin: 0% 20%;
+  padding: 10px 50px;
+  margin-bottom: 25px;
+}
+
+#example1, #example2 {
+  border:1px solid red;
+  width: 300px;
+  min-height: 100px;
+  margin: 12px;
+  background: #ff000021;
+  border-radius: 20px;
+}
+#example1 {
+  overflow-y:auto;
+  height: 500px;
+}
+#exampler {
+  border: 1px solid orange;
+  padding: 10px;
+}
+.list-group-item{
+  position: relative;
+  width: 280px;
+  min-height: 42px;
+}
+/* info bar details */
+.item-frame {
+  position: relative;
+  border: 1px solid black;
+  background: white;
+  width: 280px;
+  margin: 10px;
+  min-height: 42px;
+
+}
+.handle{
+  position: absolute;
+  border: 1px solid black;
+  background: #16839f75;
+  opacity: 0.025;
+  height: 40px;
+  width: 40px;
+  z-index:5;
+}
+.deleter {
+  background: red;
+  position: absolute;
+  right: -26px;
+  top: 10px;
+}
+#example1 .deleter {
+  display: none;
+}
+.title {
+  font-weight: bold;
+  margin-left: 40px;
+  position: absolute;
+  line-height: 0.8em;
+}
+.author {
+  font-weight: lighter;
+  margin-left: 40px;
+  position: absolute;
+  bottom: 0px;
+  font-family: monospace;
+}
+.category {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  color: #000000ad;
+}
+.page_count {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  font-family: monospace;
+}
+/* color details */
+.colors {
+  width:10px;
+  height: 20px;
+  border: 1px solid black;
+  position: absolute;
+}
+.colors.full {
+  margin-top: 0px;
+  background: linear-gradient(
+      0deg,
+      rgba(255, 0, 0, 1) 0%,
+      rgba(255, 154, 0, 1) 10%,
+      rgba(208, 222, 33, 1) 20%,
+      rgba(79, 220, 74, 1) 30%,
+      rgba(63, 218, 216, 1) 40%,
+      rgba(47, 201, 226, 1) 50%,
+      rgba(28, 127, 238, 1) 60%,
+      rgba(95, 21, 242, 1) 70%,
+      rgba(186, 12, 248, 1) 80%,
+      rgba(251, 7, 217, 1) 90%,
+      rgba(255, 0, 0, 1) 100%
+  );
+  display: none;
+}
+.colors.full.has-color {
+  display: block;
+}
+.colors.black {
+  margin-top: 20px;
+  background: black;
+}
+ /* size details */
+.frame {
+  position: absolute;
+  margin-left: 10px;
+  border: 1px solid black;
+}
+.frame.folio {
+  width: 20px;
+  height: 40px;
+}
+.frame.quarto {
+  margin-top: 20px;
+  width: 20px;
+  height: 20px;
+}
+.frame.sexto {
+  margin-top: 30px;
+  width: 10px;
+  height: 10px;
+}
+.frame.selected-size {
+  background: #9f16168c;
+}
+/* !!!!!!!!!!!!!!!!!!!!!! COLUMN DIVIDER*/
+.column-header {
+  font-weight: bolder;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.toggle {
+  position: absolute;
+  right: 0px;
+  font-family: monospace;
+}
+#example1.list-group div.list-group-item.hide-category {
+  display: none;
+}
+#example2 div.list-group-item {
+  display: block;
+  margin-right: 20px;
+}
+/* !!!!!!!!!!!!!!!!!!!!!! Tags */
+.dot {
+  height: 10px;
+  width: 10px;
+  background-color: #bbb;
+  border-radius: 50%;
+  margin:0px;
+  padding:0px;
+  display: inline-block;
+  opacity: 0;
+}
+.dot.tag-e {
+  background: orange;
+}
+.dot.tag-d {
+  background: purple;
+}
+.dot.tag-c {
+  background: red;
+}
+.dot.tag-b {
+  background: green;
+}
+.dot.tag-a {
+  background: blue;
+}
+.dot.tag-a,.dot.tag-b,.dot.tag-c,.dot.tag-d,.dot.tag-e {
+  opacity: 1;
+  display: none;
+}
+.dot-box .dot.has-tag-a,.dot-box .dot.has-tag-b,.dot-box .dot.has-tag-c,.dot.has-tag-d,.dot.has-tag-e {
+  opacity: 1;
+  display: inline-block;
+}
+.tag-a,.tag-b,.tag-c,.tag-d,.tag-e {
+  opacity: 1;
+}
+.tag-control-box .dot {
+  display: inline-block;
+}
+.list-group-item.tag-a,.list-group-item.tag-b,.list-group-item.tag-c,.list-group-item.tag-d,.list-group-item.tag-e,.list-group-item.tag-all {
+  opacity: 1;
+  display: none;
+}
+.list-group-item.tag-a.show-tag-a,.list-group-item.tag-b.show-tag-b,.list-group-item.tag-c.show-tag-c,.list-group-item.tag-d.show-tag-d,.list-group-item.tag-e.show-tag-e,.list-group-item.tag-all.show-tag-all {
+  display: block;
+}
+.dot-box {
+  position: absolute;
+  right: 0px;
+  bottom: -10px;
+}
+/* !!!!!!!!!!!!!!!!!!!!!! Controls */
+.pdf-controls {
+  border: 2px solid orange;
+  width: 500px;
+  position: absolute;
+}
+.pdf-controls .tag-control-box {
+  padding-bottom: 20px;
+}
+.pdf-preview-frame {
+  text-align: center;
+  width: 500px;
+  margin-left: 75px;
+  margin-top: 50px;
+  border: 5px solid rgb(248 65 76);
+  border-radius: 25px;
+  background: white;
+  padding-top: 0.5em;
+}
+.pdf-preview-frame iframe {
+  width: 400px;
+  height: 550px;
+  margin-top: 0.5em;
+}
+/* !!!!!!!!!!!!!!!!!!!!!! Dragging */
+body .sortable-chosen {
+  background: yellow;
+}
+body  .sortable-drag {
+  background: purple;
+}
+
+body .ignore-elements {
+  background: red;
+  margin-left: 0px;
+}
+
+#example6 .list-group-item{
+  border: 1px solid black;
+  height: 50px;
+  background: blue;
+}

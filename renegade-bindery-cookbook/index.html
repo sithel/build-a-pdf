@@ -1,0 +1,352 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="assets/styles.css">
+    <title>Build-A-PDF</title>
+    <!-- jsDelivr :: Sortable :: Latest (https://www.jsdelivr.com/package/npm/sortablejs) -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="src/pdf-lib.js"></script>
+    <script src="https://unpkg.com/@pdf-lib/fontkit/dist/fontkit.umd.min.js"></script>
+    <script src="src/jszip.js"></script>
+    <script src="src/file-saver.js"></script>
+    <script src="src/tocAssembler.js"></script>
+    <script src="src/pdfBuilder.js"></script>
+    <script src="src/uiHelpers.js"></script>
+</head>
+<body>
+<script>
+</script>
+
+<center>
+<div class="intro">
+<h1>Join us for a Renegade Bindery PDF Potluck!</h1>
+<h3> Step 1. Prepare your contributeion</h3>
+Typeset a recipe. Typeset three! Submit a cover or weird book/food fan art or photos. <br>
+<a href="https://forms.gle/FLvRxZeYsnQa2oS2A" target=”_blank”><b>Fill out the PDF Entry Form</b></a>
+<BR>What are <i>you</i> bringing to the potluck? 
+
+<br>
+<h3>Step 2. Load up your plate</h3>
+All submissions are due by <b>midnight, Saturday March 23rd (PST).</b> Once they're turned in, six will lay out the spread and you'll be able to select which pages/recipes and the order they go in to assemble your personal Renegade PDF Potluck typeset! 
+
+
+<br>
+<h3>Step 3. Potluck 'n Party!</h3>
+The party starts Sunday, March 24th -- a Discord channel will open up and last year's winners will be announce!
+<BR> In the week leading up to Edible Book Day, we'll have a couple cook 'n craft alongs. Just as a meal can be greatly enjoyed broken into several courses, so can a book be pleasantly crafted across several sessions. 
+<BR>Keep an eye on the Discord for more details to come!
+
+<br>
+<h3>Step 4. Enjoy</h3>
+Share your bound copy and/or freakish food creation on <b>April 1st in celebration of Edible Book Day.</b>
+</div>
+
+
+<div class="page-dimension">
+  
+  <table><tr><td>
+    <b>Pick your plate, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;plan your (pro)portions!</b><br/><br/>
+      The PDF Potluck tool has been written with the <a href="https://momijizukamori.github.io/bookbinder-js/">Bookbinder JS</a> (Imposition tool) in mind.
+<BR><BR>
+       The way headers and page numbers are placed assumes that all margins (ex: space above the page number) will be applied during the imposition step. 
+    </td><td>
+    <img src="assets/PDF_Potluck_Page_Layout.png">
+  </td></tr>
+  <tr><td>
+    Exported PDF Page: 
+    <div class="dimensions-input">
+    <input type="number" id="exported_width" name="exported_width" min="20" max="5000" value=275>
+    <label for="exported_width">width (in Points)</label><br>
+    <input type="number" id="exported_height" name="exported_height" min="20" max="5000" value=325>
+    <label for="exported_height">height (in Points)</label>
+    </div>
+    <span class="note">Remember, <b>1 inch = 72 points</b>  and <b>1 mm = 2.8 points</b>.</span>
+  </td><td>
+    Here are some known presets, but you'll want to reduce them to take margins into account: <br/>
+    <input type="button" value="Letter Folio" onClick="set_page_dimensions(396,612)">
+    <input type="button" value="A4 Folio" onClick="set_page_dimensions(421,595)">
+    <input type="button" value="Letter Quarto" onClick="set_page_dimensions(306,396)">
+    <input type="button" value="A4 Quarto" onClick="set_page_dimensions(298,421)">
+  </td></tr>
+  <tr><td colspan=2>
+    <br/>
+    <label for="page_number_font_size">Header text font size </label>
+    <input type="number" id="page_number_font_size" name="page_number_font_size" min="1" max="500" value=12> points
+    w/ additional padding of 
+    <input type="number" id="header_padding" name="header_padding" min="0" max="500" value=20> points
+    below.
+
+    
+  </td></tr>
+  </table>
+  <script language="javascript">
+function set_page_dimensions(width, height) {
+  document.getElementById('exported_width').value = width;
+  document.getElementById('exported_height').value = height;
+}
+  </script>
+</div>
+
+<div class="page-generated-content">
+  <table><tr><td>
+    <b>Select your sides</b><br>
+    Horizontal page content positioning : 
+    <select name="cars" id="horizontal_page_positioning">
+      <option value="inner">snug against binding</option>
+      <option value="center" selected>centered</option>
+      <option value="outer">snug against fore edge</option>
+    </select> <br/>
+
+    Vertical page content positioning : 
+    <select name="cars" id="vertical_page_positioning">
+      <option value="top">snug against header</option>
+      <option value="center" selected>centered</option>
+      <option value="bottom">snug against bottom</option>
+    </select> <br/>
+
+    Verso header : 
+    <select name="cars" id="verso_header" onChange="versoChange(this)">
+      <option value="title">title</option>
+      <option value="author">author</option>
+      <option value="nothing">nothing</option>
+      <option value="section">section name</option>
+      <option value="custom">custom header</option>
+    </select> 
+    <input type="text" id="verso_custom_header" class="custom_header_field" name="verso_custom_header" style="display:none;">
+    <br/>
+
+    Recto header : 
+    <select name="recto_header" id="recto_header" onChange="rectoChange(this)">
+      <option value="author">author</option>
+      <option value="section">section name</option>
+      <option value="title">title</option>
+      <option value="nothing">nothing</option>
+      <option value="custom">custom header</option>
+    </select> 
+    <input type="text" id="recto_custom_header" class="custom_header_field" name="recto_custom_header" style="display:none;">
+    <br/>
+    Header & Table of Contents font :
+    <select name="hearer_toc_font" id="hearer_toc_font">
+      <option value="TimesRoman">Times Roman</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Courier">Courier</option>
+      <option value="Helvetica">Helvetica</option>
+      <option value="ComicSans">Comic Sans MS</option>
+    </select> 
+    <br/>
+
+    Outline the PDF content (for debugging purposes): <input type="checkbox" id="debug_box_outline">
+  </td></tr></table>
+</div>
+
+<div class="disclaimer">
+  This page/tool is being actively worked on. There's still a couple bugs to be squashed and features to be ironed out. This is a proof of concept demo ( & you can expect a more working version by Sunday March 24th)<BR><BR>
+  <b> DOES NOT WORK ON MOBILE DEVICES </b> - written & tested for Desktop Chrome
+</div>
+
+<div class="page-imported-content exampler">
+  <table><tr><td colspan="2" align=center>
+    <b>Collect your content</b><br>
+    Grab recipes on the left by their weird set of squares and drag them over to add to your book.<br>
+    <br>
+      <input type="button" value="Preview!" id="previewTop" onClick="buildThatPdf(sortable2.toArray(), true)">
+      <input type="button" value="Download!" id="download" onClick="buildThatPdf(sortable2.toArray(), false)">
+    </td></tr>
+    <tr style="vertical-align: top;"><td>
+      The Bounty Before You
+      <div id="example1" class="list-group col">
+        <!-- start -
+        <div class="list-group-item"> 
+          <div class="dot-box">
+            <div class="dot tag-a has-tag-a"></div>
+            <div class="dot tag-b has-tag-b"></div>
+            <div class="dot tag-c has-tag-c"></div>
+          </div>
+          <div class="item-frame">
+            <div class="deleter" onClick="deleteMe(this)">[X]</div>
+            <div class="handle"></div>
+            <div class="colors full has-color"></div>
+            <div class="colors black"></div>
+            <div class="frame folio selected-size"></div>
+            <div class="frame quarto"></div>
+            <div class="title">Ignore this title it is long and it keeps going and stuff like that</div>
+            <div class="author">Debug author</div>
+            <div class="category">sharks</div>
+            <div class="page_count">3</div>
+          </div>
+        </div>
+        - end -->
+      </div>
+    </td><td align=right>
+      What You've Added to Your Plate
+      <div id="example2" class="list-group col"></div>
+    </td></tr>
+    <tr><td>
+      <div class="tag-control-box" id="tag-info-box">
+        <input type="checkbox" id="enable-tag-a"  data-value="a" onClick="toggleTag(this)" checked>
+        <label for="enable-tag-a"><div class="dot tag-a"></div> Fake label</label>
+      </div>
+    </td></tr>
+  </table>
+</div>
+
+<div class="pdf-preview-frame" style="display: none">
+  <input type="button" value="Refresh Preview!" id="previewBottom" onClick="buildThatPdf(sortable2.toArray(), true)"><br>
+  <iframe id="pdf"></iframe>
+</div>
+
+
+
+
+
+
+<script language="javascript">
+  var tags = [
+    { value: "a", label: "Vegan" },
+    { value: "b", label: "Vegetarian" },
+    { value: "c", label: "Lactose Free" },
+    { value: "d", label: "Kosher" },
+    { value: "e", label: "Gluten Free" },
+  ]
+/*
+=JOIN(", ",
+MAP(SPLIT(input,","), LAMBDA(e, SWITCH(TRIM(e), 
+"Vegan", "a",
+"Vegetarian","b",
+"Lactose Free","c",
+"Kosher", "d",
+"Gluten Free","e",
+"what what '"&e&"'"
+))))
+*/
+  var tagInfoBox = document.getElementById('tag-info-box');
+  console.log("infobox? ",tagInfoBox)
+  var tagTotal = tags.concat([{value:"all", label:"Other"}]);
+  var z = tagTotal.reduce((acc, tag) => {
+    var v = tag.value;
+    var s = `
+  <input type="checkbox" id="enable-tag-`+v+`"  data-value="`+v+`" onClick="toggleTag(this)" checked>
+  <label for="enable-tag-`+v+`"><div class="dot tag-`+v+`"></div>&nbsp;`+tag.label+`</label>
+`
+    console.log("Rebecca : ",s)
+    return acc + s
+  }, "");
+  console.log("And done w/ ",z)
+  tagInfoBox.innerHTML = z;
+</script>
+
+
+<script type="text/javascript">
+  const SPECIAL_TOC_FILENAME_FOLIO = "toc_filename_folio"
+  const SPECIAL_TOC_FILENAME_QUARTO = "toc_filename_quarto"
+  const el1 = document.getElementById('example1');
+  const data = [
+    // 0 = display name
+    // 1 = PDF url
+    // 2 = user name
+    // 3 = tags
+    // 4 = page count
+    // 5 = isFolio
+    // 6 = hasColor
+    {type: 'header', value: 'cover', label: 'Title Pages', entries: [
+      ['Title Page', 'pdfs/texasrachel_title.pdf', 'texasrachel', new Set(), 1, true, false],
+      ['Title Page', 'pdfs/six_title.pdf', 'six', new Set(), 1, true, false],
+    ]},
+    {type: 'header', value: 'meta', label: 'Helper Pages', entries: [
+      ['Table of Contents', SPECIAL_TOC_FILENAME_FOLIO, 'six', new Set(), 1, false, false],
+      ['Table of Contents', SPECIAL_TOC_FILENAME_QUARTO, 'six', new Set(), 1, true, false],
+      ['blank (w/ headers)', 'pdfs/blank_page.pdf', 'texasrachel', new Set(), 1, true, false],
+      ['blank (w/o headers)', 'pdfs/super_blank_page.pdf', 'six', new Set(), 1, true, false],
+    ]},
+    {type: 'header', value: 'appetizers', label: 'Appetizers', entries: [
+      ['Blue Ribbon White Bread', 'pdfs/texasrachel_bread.pdf', 'texasrachel', new Set(), 2, true, true],
+['Ham & Broccoli Muffins', 'pdfs/Renegade - PDF Potluck - Muffins - Daemonluna.pdf', 'Daemonluna', new Set(['e']), 1, true, false],
+    ]},
+    {type: 'header', value: 'sides', label: 'Sides', entries: [
+      ['Salsa Verde', 'pdfs/lark_1.pdf', 'lark', new Set(), 1, true, false],
+['Ketchup Fried Rice', 'pdfs/Ketchup Fried Rice - Kit Rei.pdf', 'kitsunerei88', new Set(['c']), 2, true, true],
+['Cranberry, Apple, and Ginger Chutney', 'pdfs/Holiday Chutney Recipe - ascariot300.pdf', 'Z the Tea Aunty', new Set(['a', 'b', 'c', 'e']), 1, true, false],
+    ]},
+    {type: 'header', value: 'soups_n_salads', label: 'Soups \'n Salads', entries: [
+      ['Apple Chicken Salad', 'pdfs/texasrachel_salad.pdf', 'texasrachel', new Set(), 1, true, false],
+      ['Cabbage Salad', 'pdfs/lark_4.pdf', 'lark', new Set(), 1, true, false],
+['Noodle\'s Noodles', 'pdfs/Noodle\'snoodles - Cas Von Trapp.pdf', 'Noodle', new Set(['a', 'b', 'c', 'd']), 1, true, false],
+['My Deer, Sweet Chili', 'pdfs/Renegade cookbook - Celli Malone.pdf', 'Recti', new Set(['c', 'e', 'd']), 3, true, false],
+['Daemonluna Makes Soup', 'pdfs/Renegade - PDF Potluck - Soup - Daemonluna.pdf', 'Daemonluna', new Set(['e']), 5, true, false],
+['Chickpea and Kale Caesar Salad ', 'pdfs/Chickpea and Kale Caesar - Priya Brenkley.pdf', 'Echeveria || Lone Orchid Bindery', new Set(['b', 'e']), 2, true, false],
+
+    ]},
+    {type: 'header', value: 'mains', label: 'Mains', entries: [
+      ['Beef Enchiladas', 'pdfs/texasrachel_main.pdf', 'texasrachel', new Set(), 1, true, false],
+      ['Korean BBQ Chicken', 'pdfs/lark_2.pdf', 'lark', new Set(), 1, true, false],
+      ['Taco Chili', 'pdfs/Taco Chili - Leah.pdf', 'vwt', new Set(), 1, true, false],
+['Lamb Curry', 'pdfs/Lamb Curry 5x8 - ascariot300.pdf', 'Z the Tea Aunty', new Set(['c', 'e']), 1, true, false],
+['Chicken Piccata', 'pdfs/piccata - Frog Eye Press.pdf', 'Lark', new Set(), 1, true, false],
+['First Place Chili, No Beans', 'pdfs/chili - Frog Eye Press.pdf', 'Lark', new Set(['c', 'e']), 1, true, false],
+
+    ]},
+    {type: 'header', value: 'dessert', label: 'Desserts', entries: [
+      ['Ginger Cookies', 'pdfs/texasrachel_cookies.pdf', 'texasrachel', new Set(), 1, true, false],
+      ['Jammy Bastards', 'pdfs/lark_3.pdf', 'lark', new Set(), 1, true, false],
+      ['Hard Crack', 'pdfs/six_sugar.pdf', 'six', new Set(), 1, true, false],
+
+      ['Customizable Biscotti', 'pdfs/biscotti recipe 1 - Gabrielle S.pdf', 'Catz', new Set(['b']), 2, true, false],
+      ['Mocha Shortbread', 'pdfs/Renegade - PDF Potluck - Mocha - Daemonluna.pdf', 'Daemonluna', new Set(['b', 'e']), 1, true, false],
+      ['Mulberry Cobbler', 'pdfs/mulberry cobbler - Cas Von Trapp.pdf', 'Noodle', new Set(['d']), 1, true, false],
+      ['Eggless Basic Cookie', 'pdfs/eggless cookie dough renegade potluck - C Lim.pdf', 'Levynite', new Set(), 1, true, false],
+
+    ]},
+  ]
+
+  function look_up_recipe_by_url(url) {
+    return data.map( c => {
+      return c.entries.filter(r => r[1] == url)
+    }).flat()
+  }
+
+  const no_header_urls = data[0].entries.map(p => {return p[1]}) + ['pdfs/super_blank_page.pdf'];
+
+  data.forEach( d => {
+    buildHeader(d.value, d.label, el1);
+    buildPdfEntries(d.entries, d.value, el1);
+  })
+
+  function deleteMe(xButton) {
+    var rowToKill = xButton.parentElement.parentElement;
+    var remover = rowToKill.parentElement;
+    console.log("Killing ",rowToKill)
+    remover.removeChild(rowToKill)
+  }
+
+  function makeOptions(tagName) {
+    return {
+      group: {name: "a-b", pull: "clone", put: false},
+      filter: ".ignore-elements",  // Selectors that do not lead to dragging (String or Function)
+      handle: ".handle",  // Drag handle selector within list items
+      chosenClass: "sortable-chosen",  // Class name for the chosen item
+      dragClass: "sortable-drag",  // Class name for the dragging item
+      dataIdAttr: 'data-id',
+      emptyInsertThreshold: 300,
+      animation: 150,
+      onUpdate: function() {
+        console.log( tagName+" UPDATE "+ this.toArray() );
+      },
+      onEnd: function() {
+        console.log(tagName+" END "+ this.toArray() );
+      },
+      // Element is removed from the list into another list
+      onRemove: function (/**Event*/evt) {
+        console.log(tagName+" REMOVE "+ this.toArray() );
+      },
+      // Element is dropped into the list from another list
+      onAdd: function (/**Event*/evt) {
+        console.log(tagName+" ADD "+ this.toArray() );
+      },
+    }
+  }
+  var sortable1 = new Sortable(el1, {...makeOptions("list1"), sort: false});
+  var el2 = document.getElementById('example2');
+  var sortable2 = new Sortable(el2, {...makeOptions("list2"), group: {name: "a-b", pull: "clone", put: true}});
+</script>
+</body>
+</html>
