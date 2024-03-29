@@ -17,8 +17,9 @@ function buildToc(pdfDoc, newPage, meta, isFolio) {
   })
   const sample_list = buildRecipeDataList(meta.fileNames) ;//[["sharks",7],["candy",14],["winter", 666]];
   const height_gap = 2;
-  const list_font_size = fontSize / 2;
-  renderList(newPage, w, lower_title_boundry, sample_list, list_font_size, height_gap, meta);
+  meta.min_list_font_size = fontSize / 3 ;
+  meta.max_list_font_size = fontSize / 2 ;
+  renderList(newPage, w, lower_title_boundry, sample_list, height_gap, meta);
 }
 
 /**
@@ -49,14 +50,28 @@ function buildRecipeDataList(fileNames) {
 /*
  * @param list = [] of [title, page_loc]
  */
-function renderList(page, w, h, list, list_font_size, height_gap, meta) {
+function renderList(page, w, h, list, height_gap, meta) {
   const rows = list.length + (list.length  * height_gap);
-  const fontSize = Math.min(list_font_size, h / rows);
+  const fontSize = Math.max(meta.min_list_font_size, Math.min(meta.max_list_font_size, h / rows));
+  meta.calc_toc_row_y = function(r) {
+    return (r * fontSize + r * fontSize * height_gap + fontSize) % h;
+  }
+  const rows_per_page = Math.ceil(h/meta.calc_toc_row_y(1)) + 1;
+  const extra_pages = Math.ceil(list.length % rows_per_page)
+  const pages = [page]
+  for(let i = 0; i <= extra_pages; ++i) {
+    pages.push(meta.newPageBuilder())
+  }
+  const max_y = meta.calc_toc_row_y(list.length + 1)
+  console.log(" List Size "+list.length+" w/ "+max_y+" : "+rows_per_page + " : "+ pages)
   const padding = 20;
   list.forEach( (row, i) => {
     // TODO : push down the max row size to be something reasonable 
-    y = i * fontSize + i*fontSize * height_gap + fontSize;
-    window.renderRow(page, padding, w, h - y, fontSize, row[0]+" ", row[1], meta);
+    page_num = Math.floor(i / rows_per_page)
+    delta = meta.calc_toc_row_y(i - page_num * rows_per_page);
+    console.log(" - "+i+" : "+delta+" : "+h+": "+ page_num )
+    y = (h - delta) + ((page_num > 0) ? fontSize*2 : 0)
+    window.renderRow(pages[page_num], padding, w, y, fontSize, row[0]+" ", row[1], meta);
   })
 }
 
@@ -84,7 +99,8 @@ function renderRow(page, padding, w, y, font_size, text, num, meta){
   const dot_start = padding + meta.pageNumFont.widthOfTextAtSize(text, font_size)
   const error = meta.pageNumFont.widthOfTextAtSize("...", font_size)
   const dot_end = w - padding - numWidth + error/2;
-  fill_with_dots(page, y, dot_start, dot_end, font_size, error, meta);
+  //console.log("Dot start ["+dot_start+"]     dot end ["+dot_end+"]")
+  fill_with_dots(page, y, Math.min(dot_end, dot_start), Math.max(dot_start, dot_end), font_size, error, meta);
 }
 
 function fill_with_dots(page, y, dot_start, dot_end, font_size, error, meta) {

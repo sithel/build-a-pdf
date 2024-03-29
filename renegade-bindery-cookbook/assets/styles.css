@@ -58,6 +58,20 @@ body {
   padding: 10px 50px;
   margin-bottom: 25px;
 }
+.previews {
+  background: #ffffffbd;
+  width: 800px;
+  margin-bottom: 40px;
+  border-radius: 10px;
+}
+.previews td {
+  padding: 6px;
+}
+.previews img {
+  max-width: 150px;
+  max-height: 150px;
+  float: left;
+}
 
 #example1, #example2 {
   border:1px solid red;
@@ -67,6 +81,11 @@ body {
   background: #ff000021;
   border-radius: 20px;
   padding-bottom: 50px;
+}
+#example2 {
+  overflow-y: auto;
+  max-height: 500px;
+  padding-right: 20px;
 }
 #example1 {
   overflow-y:auto;

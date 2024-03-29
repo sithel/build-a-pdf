@@ -63,7 +63,10 @@ async function addPdfContent(pdfDoc, fileName, meta) {
 }
 
 async function addToC(pdfDoc, fileName, meta) {
-  const newPage = pdfDoc.addPage(meta.dimensions)
+  meta.newPageBuilder = function() {
+    return pdfDoc.addPage(meta.dimensions);
+  }
+  const newPage = meta.newPageBuilder()
   buildToc(pdfDoc, newPage, meta, fileName == SPECIAL_TOC_FILENAME_FOLIO);
 }
 
@@ -132,7 +135,7 @@ function drawHeader(newPage, meta) {
   let y, x;
   [y, x] = drawPageNumber(newPage, meta)
   let header_y = drawHeaderText(newPage, meta, y, x) - meta.headerPadding
-  console.log(" drawHeader : "+header_y+" vs "+newPage.getHeight()+" - "+(meta.size*1.25)+" or "+meta.headerPadding)
+  //console.log(" drawHeader : "+header_y+" vs "+newPage.getHeight()+" - "+(meta.size*1.25)+" or "+meta.headerPadding)
   return header_y
 }
 
